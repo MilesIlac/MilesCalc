@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
     boolean hasOpeningParenthesis = false;
     int OPCount = 0;
     int CPCount = 0;
-    String getNum = " ";
     String backgroundSequence = " ";
     int endCharIndex;
     int lastIndex = -1;
@@ -93,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.btnSubt:
                 txtViewSmall.setText(txtViewSmall.getText()+"-");
-                backgroundSequence = backgroundSequence.trim() + "-";
+                backgroundSequence = backgroundSequence.trim() + "+-";
                 break;
             case R.id.btnMult:
                 txtViewSmall.setText(txtViewSmall.getText()+"x");
@@ -142,94 +141,8 @@ public class MainActivity extends AppCompatActivity {
                             toSolve(testToSolve,"+",true);
                         }
 
-                        while (testToSolve.contains("-")) {
-
-                            //get current operation
-                            int operandIndex = testToSolve.lastIndexOf("-");
-                            System.out.println("Last index of -: " + operandIndex);
-
-                            //check operation/s at left of current operation
-                            if (testToSolve.contains("+") || testToSolve.contains("-") || testToSolve.contains("x") || testToSolve.contains("/")) {
-                                for (int i=0;i<operandIndex;i++) {
-                                    if (testToSolve.charAt(i) == '+' || testToSolve.charAt(i) == '-' || testToSolve.charAt(i) == 'x' || testToSolve.charAt(i) == '/') {
-                                        lastIndex = i;
-                                    }
-                                }
-                            }
-                            int beforeOperandIndex = lastIndex;
-                            System.out.println("Index of possible op before current opIndex: " + beforeOperandIndex);
-
-                            //check operation/s at right of current operation
-                            if (testToSolve.contains("+") || testToSolve.contains("-") || testToSolve.contains("x") || testToSolve.contains("/")) {
-                                for (int i=testToSolve.length()-1;i>operandIndex;i--) {
-                                    if (testToSolve.charAt(i) == '+' || testToSolve.charAt(i) == '-' || testToSolve.charAt(i) == 'x' || testToSolve.charAt(i) == '/') {
-                                        nextIndex = i;
-                                    }
-                                }
-                            }
-                            int afterOperandIndex = nextIndex;
-                            System.out.println("Index of possible op before after opIndex: " + afterOperandIndex);
-
-
-//                        int a = Integer.parseInt(testToSolve.substring(0,operandIndex));
-//                        int b = Integer.parseInt(testToSolve.substring(operandIndex+1,afterOperandIndex));
-//                        String newEquation = backgroundSequence.substring(0,afterOperandIndex+1).trim();
-//                        String isSolved = String.valueOf(a+b);
-//                        System.out.println("This is the new equation (no groupings): " + newEquation);
-//                        System.out.println("This is the new equation plus solved: " + newEquation + isSolved);
-//                        backgroundSequence = newEquation + isSolved;
-
-                            //solving w/ respect to the indexes
-                            if (beforeOperandIndex != -1) { //if left operand exists
-                                int a = Integer.parseInt(testToSolve.substring(beforeOperandIndex+1,operandIndex));
-                                int b;
-                                String newEquation = backgroundSequence.substring(0,beforeOperandIndex+1).trim();
-                                String newEquation2;
-                                if (afterOperandIndex != -1) { //if right operand exists
-                                    b = Integer.parseInt(testToSolve.substring(operandIndex+1,afterOperandIndex));
-                                    String isSolved = String.valueOf(a-b);
-                                    newEquation2 = backgroundSequence.substring(afterOperandIndex).trim();
-                                    System.out.println("This is the new equation (no groupings): " + newEquation + "()" + newEquation2);
-                                    System.out.println("This is the new equation plus solved: " + newEquation + isSolved + newEquation2);
-                                    backgroundSequence = newEquation + isSolved + newEquation2;
-                                }
-                                else { //if right operand does not exist
-                                    b = Integer.parseInt(testToSolve.substring(operandIndex+1));
-                                    String isSolved = String.valueOf(a-b);
-                                    System.out.println("This is the new equation (no groupings): " + newEquation);
-                                    System.out.println("This is the new equation plus solved: " + newEquation + isSolved);
-                                    backgroundSequence = newEquation + isSolved;
-                                }
-                            }
-                            else { //if left operand does not exist
-                                int a = Integer.parseInt(testToSolve.substring(0,operandIndex));
-                                int b;
-                                String newEquation2;
-                                if (afterOperandIndex != -1) { //if right operand exists
-                                    b = Integer.parseInt(testToSolve.substring(operandIndex+1,afterOperandIndex));
-                                    String isSolved = String.valueOf(a-b);
-                                    newEquation2 = backgroundSequence.substring(afterOperandIndex).trim();
-                                    System.out.println("This is the new equation (no groupings): " + "()" + newEquation2);
-                                    System.out.println("This is the new equation plus solved: " + isSolved + newEquation2);
-                                    backgroundSequence = isSolved + newEquation2;
-                                }
-                                else { //if right operand does not exist
-                                    b = Integer.parseInt(testToSolve.substring(operandIndex+1));
-                                    String isSolved = String.valueOf(a-b);
-                                    System.out.println("This is the new equation plus solved: " + isSolved);
-                                    backgroundSequence = isSolved;
-                                }
-                            }
-
-                            lastIndex = -1;
-                            nextIndex = -1;
-                            testToSolve = backgroundSequence;
-                            txtViewBig.setText(backgroundSequence);
-                        }
-
-
                 }
-                while (backgroundSequence.contains("+") || backgroundSequence.contains("-") || backgroundSequence.contains("x") || backgroundSequence.contains("/")) {
+                while (backgroundSequence.contains("+") || backgroundSequence.contains("x") || backgroundSequence.contains("/")) {
                     String testToSolve = backgroundSequence;
 
 
@@ -246,97 +159,12 @@ public class MainActivity extends AppCompatActivity {
                     while (testToSolve.contains("+")) {
                         toSolve(testToSolve,"+",false);
                         testToSolve = backgroundSequence;
-                    }
-
-                    while (testToSolve.contains("-")) {
-
-                        //get current operation
-                        int operandIndex = testToSolve.lastIndexOf("-");
-                        System.out.println("Last index of -: " + operandIndex);
-
-                        //check operation/s at left of current operation
-                        if (testToSolve.contains("+") || testToSolve.contains("-") || testToSolve.contains("x") || testToSolve.contains("/")) {
-                            for (int i=0;i<operandIndex;i++) {
-                                if (testToSolve.charAt(i) == '+' || testToSolve.charAt(i) == '-' || testToSolve.charAt(i) == 'x' || testToSolve.charAt(i) == '/') {
-                                    lastIndex = i;
-                                }
-                            }
-                        }
-                        int beforeOperandIndex = lastIndex;
-                        System.out.println("Index of possible op before current opIndex: " + beforeOperandIndex);
-
-                        //check operation/s at right of current operation
-                        if (testToSolve.contains("+") || testToSolve.contains("-") || testToSolve.contains("x") || testToSolve.contains("/")) {
-                            for (int i=testToSolve.length()-1;i>operandIndex;i--) {
-                                if (testToSolve.charAt(i) == '+' || testToSolve.charAt(i) == '-' || testToSolve.charAt(i) == 'x' || testToSolve.charAt(i) == '/') {
-                                    nextIndex = i;
-                                }
-                            }
-                        }
-                        int afterOperandIndex = nextIndex;
-                        System.out.println("Index of possible op before after opIndex: " + afterOperandIndex);
-
-
-//                        int a = Integer.parseInt(testToSolve.substring(0,operandIndex));
-//                        int b = Integer.parseInt(testToSolve.substring(operandIndex+1,afterOperandIndex));
-//                        String newEquation = backgroundSequence.substring(0,afterOperandIndex+1).trim();
-//                        String isSolved = String.valueOf(a+b);
-//                        System.out.println("This is the new equation (no groupings): " + newEquation);
-//                        System.out.println("This is the new equation plus solved: " + newEquation + isSolved);
-//                        backgroundSequence = newEquation + isSolved;
-
-                        //solving w/ respect to the indexes
-                        if (beforeOperandIndex != -1) { //if left operand exists
-                            int a = Integer.parseInt(testToSolve.substring(beforeOperandIndex+1,operandIndex));
-                            int b;
-                            String newEquation = backgroundSequence.substring(0,beforeOperandIndex+1).trim();
-                            String newEquation2;
-                            if (afterOperandIndex != -1) { //if right operand exists
-                                b = Integer.parseInt(testToSolve.substring(operandIndex+1,afterOperandIndex));
-                                String isSolved = String.valueOf(a-b);
-                                newEquation2 = backgroundSequence.substring(afterOperandIndex).trim();
-                                System.out.println("This is the new equation (no groupings): " + newEquation + "()" + newEquation2);
-                                System.out.println("This is the new equation plus solved: " + newEquation + isSolved + newEquation2);
-                                backgroundSequence = newEquation + isSolved + newEquation2;
-                            }
-                            else { //if right operand does not exist
-                                b = Integer.parseInt(testToSolve.substring(operandIndex+1));
-                                String isSolved = String.valueOf(a-b);
-                                System.out.println("This is the new equation (no groupings): " + newEquation);
-                                System.out.println("This is the new equation plus solved: " + newEquation + isSolved);
-                                backgroundSequence = newEquation + isSolved;
-                            }
-                        }
-                        else { //if left operand does not exist
-                            int a = Integer.parseInt(testToSolve.substring(0,operandIndex));
-                            int b;
-                            String newEquation2;
-                            if (afterOperandIndex != -1) { //if right operand exists
-                                b = Integer.parseInt(testToSolve.substring(operandIndex+1,afterOperandIndex));
-                                String isSolved = String.valueOf(a-b);
-                                newEquation2 = backgroundSequence.substring(afterOperandIndex).trim();
-                                System.out.println("This is the new equation (no groupings): " + "()" + newEquation2);
-                                System.out.println("This is the new equation plus solved: " + isSolved + newEquation2);
-                                backgroundSequence = isSolved + newEquation2;
-                            }
-                            else { //if right operand does not exist
-                                b = Integer.parseInt(testToSolve.substring(operandIndex+1));
-                                String isSolved = String.valueOf(a-b);
-                                System.out.println("This is the new equation plus solved: " + isSolved);
-                                backgroundSequence = isSolved;
-                            }
-                        }
-
-                        lastIndex = -1;
-                        nextIndex = -1;
-                        testToSolve = backgroundSequence;
-                        txtViewBig.setText(backgroundSequence);
                     }
 
                 }
                 }
             else {
-                while (backgroundSequence.contains("+") || backgroundSequence.contains("-") || backgroundSequence.contains("x") || backgroundSequence.contains("/")) {
+                while (backgroundSequence.contains("+") || backgroundSequence.contains("x") || backgroundSequence.contains("/")) {
                     String testToSolve = backgroundSequence;
 
 
@@ -353,91 +181,6 @@ public class MainActivity extends AppCompatActivity {
                     while (testToSolve.contains("+")) {
                         toSolve(testToSolve,"+",false);
                         testToSolve = backgroundSequence;
-                    }
-
-                    while (testToSolve.contains("-")) {
-
-                        //get current operation
-                        int operandIndex = testToSolve.lastIndexOf("-");
-                        System.out.println("Last index of -: " + operandIndex);
-
-                        //check operation/s at left of current operation
-                        if (testToSolve.contains("+") || testToSolve.contains("-") || testToSolve.contains("x") || testToSolve.contains("/")) {
-                            for (int i=0;i<operandIndex;i++) {
-                                if (testToSolve.charAt(i) == '+' || testToSolve.charAt(i) == '-' || testToSolve.charAt(i) == 'x' || testToSolve.charAt(i) == '/') {
-                                    lastIndex = i;
-                                }
-                            }
-                        }
-                        int beforeOperandIndex = lastIndex;
-                        System.out.println("Index of possible op before current opIndex: " + beforeOperandIndex);
-
-                        //check operation/s at right of current operation
-                        if (testToSolve.contains("+") || testToSolve.contains("-") || testToSolve.contains("x") || testToSolve.contains("/")) {
-                            for (int i=testToSolve.length()-1;i>operandIndex;i--) {
-                                if (testToSolve.charAt(i) == '+' || testToSolve.charAt(i) == '-' || testToSolve.charAt(i) == 'x' || testToSolve.charAt(i) == '/') {
-                                    nextIndex = i;
-                                }
-                            }
-                        }
-                        int afterOperandIndex = nextIndex;
-                        System.out.println("Index of possible op before after opIndex: " + afterOperandIndex);
-
-
-//                        int a = Integer.parseInt(testToSolve.substring(0,operandIndex));
-//                        int b = Integer.parseInt(testToSolve.substring(operandIndex+1,afterOperandIndex));
-//                        String newEquation = backgroundSequence.substring(0,afterOperandIndex+1).trim();
-//                        String isSolved = String.valueOf(a+b);
-//                        System.out.println("This is the new equation (no groupings): " + newEquation);
-//                        System.out.println("This is the new equation plus solved: " + newEquation + isSolved);
-//                        backgroundSequence = newEquation + isSolved;
-
-                        //solving w/ respect to the indexes
-                        if (beforeOperandIndex != -1) { //if left operand exists
-                            int a = Integer.parseInt(testToSolve.substring(beforeOperandIndex+1,operandIndex));
-                            int b;
-                            String newEquation = backgroundSequence.substring(0,beforeOperandIndex+1).trim();
-                            String newEquation2;
-                            if (afterOperandIndex != -1) { //if right operand exists
-                                b = Integer.parseInt(testToSolve.substring(operandIndex+1,afterOperandIndex));
-                                String isSolved = String.valueOf(a-b);
-                                newEquation2 = backgroundSequence.substring(afterOperandIndex).trim();
-                                System.out.println("This is the new equation (no groupings): " + newEquation + "()" + newEquation2);
-                                System.out.println("This is the new equation plus solved: " + newEquation + isSolved + newEquation2);
-                                backgroundSequence = newEquation + isSolved + newEquation2;
-                            }
-                            else { //if right operand does not exist
-                                b = Integer.parseInt(testToSolve.substring(operandIndex+1));
-                                String isSolved = String.valueOf(a-b);
-                                System.out.println("This is the new equation (no groupings): " + newEquation);
-                                System.out.println("This is the new equation plus solved: " + newEquation + isSolved);
-                                backgroundSequence = newEquation + isSolved;
-                            }
-                        }
-                        else { //if left operand does not exist
-                            int a = Integer.parseInt(testToSolve.substring(0,operandIndex));
-                            int b;
-                            String newEquation2;
-                            if (afterOperandIndex != -1) { //if right operand exists
-                                b = Integer.parseInt(testToSolve.substring(operandIndex+1,afterOperandIndex));
-                                String isSolved = String.valueOf(a-b);
-                                newEquation2 = backgroundSequence.substring(afterOperandIndex).trim();
-                                System.out.println("This is the new equation (no groupings): " + "()" + newEquation2);
-                                System.out.println("This is the new equation plus solved: " + isSolved + newEquation2);
-                                backgroundSequence = isSolved + newEquation2;
-                            }
-                            else { //if right operand does not exist
-                                b = Integer.parseInt(testToSolve.substring(operandIndex+1));
-                                String isSolved = String.valueOf(a-b);
-                                System.out.println("This is the new equation plus solved: " + isSolved);
-                                backgroundSequence = isSolved;
-                            }
-                        }
-
-                        lastIndex = -1;
-                        nextIndex = -1;
-                        testToSolve = backgroundSequence;
-                        txtViewBig.setText(backgroundSequence);
                     }
 
                 }
@@ -527,38 +270,44 @@ public class MainActivity extends AppCompatActivity {
             txtViewSmall.setText(txtViewSmall.getText() + s);
             backgroundSequence = backgroundSequence.trim() + s;
         }
-        getNum = getNum + s;
-        System.out.println(getNum.trim());
+
     }
+
+
+
+
 
     public void toSolve(String testToSolve, String op, boolean hasParenthesis) {
 
+        //-- get indexes
+        //get current operation
+        int operandIndex = testToSolve.lastIndexOf(op);
+        System.out.println("Last index of " + op + ": " + operandIndex);
+
+        //check operation/s at left of current operation
+        if (testToSolve.contains("+") || testToSolve.contains("x") || testToSolve.contains("/")) {
+            for (int i=0;i<operandIndex;i++) {
+                if (testToSolve.charAt(i) == '+' || testToSolve.charAt(i) == 'x' || testToSolve.charAt(i) == '/') {
+                    lastIndex = i;
+                }
+            }
+        }
+        int beforeOperandIndex = lastIndex;
+        System.out.println("Index of possible op before current opIndex: " + beforeOperandIndex);
+
+        //check operation/s at right of current operation
+        if (testToSolve.contains("+") || testToSolve.contains("x") || testToSolve.contains("/")) {
+            for (int i=testToSolve.length()-1;i>operandIndex;i--) {
+                if (testToSolve.charAt(i) == '+' || testToSolve.charAt(i) == 'x' || testToSolve.charAt(i) == '/') {
+                    nextIndex = i;
+                }
+            }
+        }
+        int afterOperandIndex = nextIndex;
+        System.out.println("Index of possible op before after opIndex: " + afterOperandIndex);
+        //--
+
         if (hasParenthesis) {
-            //get current operation
-            int operandIndex = testToSolve.lastIndexOf(op);
-            System.out.println("Last index of " + op + ": " + operandIndex);
-
-            //check operation/s at left of current operation
-            if (testToSolve.contains("+") || testToSolve.contains("-") || testToSolve.contains("x") || testToSolve.contains("/")) {
-                for (int i=0;i<operandIndex;i++) {
-                    if (testToSolve.charAt(i) == '+' || testToSolve.charAt(i) == '-' || testToSolve.charAt(i) == 'x' || testToSolve.charAt(i) == '/') {
-                        lastIndex = i;
-                    }
-                }
-            }
-            int beforeOperandIndex = lastIndex;
-            System.out.println("Index of possible op before current opIndex: " + beforeOperandIndex);
-
-            //check operation/s at right of current operation
-            if (testToSolve.contains("+") || testToSolve.contains("-") || testToSolve.contains("x") || testToSolve.contains("/")) {
-                for (int i=testToSolve.length()-1;i>operandIndex;i--) {
-                    if (testToSolve.charAt(i) == '+' || testToSolve.charAt(i) == '-' || testToSolve.charAt(i) == 'x' || testToSolve.charAt(i) == '/') {
-                        nextIndex = i;
-                    }
-                }
-            }
-            int afterOperandIndex = nextIndex;
-            System.out.println("Index of possible op before after opIndex: " + afterOperandIndex);
 
             //solving w/ respect to the indexes
             if (beforeOperandIndex != -1) { //if left operand exists
@@ -572,9 +321,6 @@ public class MainActivity extends AppCompatActivity {
                         case "+":
                             isSolved = String.valueOf(a+b);
                             break;
-                        case "-":
-                            isSolved = String.valueOf(a-b);
-                            break;
                         case "x":
                             isSolved = String.valueOf(a*b);
                             break;
@@ -586,7 +332,7 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("This is the new equation (with groupings): " + newEquation + "()" + newEquation2);
                     System.out.println("This is the new equation plus solved: " + newEquation + isSolved + newEquation2);
                     String currentSolved = newEquation + isSolved + newEquation2;
-                    if (currentSolved.contains("+") || currentSolved.contains("-") || currentSolved.contains("x") || currentSolved.contains("/")) {
+                    if (currentSolved.contains("+") || currentSolved.contains("x") || currentSolved.contains("/")) {
                         backgroundSequence = backgroundSequence.replace(backgroundSequence.substring(indexInnermostOParenthesis+1,indexInnermostCParenthesis),currentSolved);
                         System.out.println("Current equation: " + backgroundSequence);
                     }
@@ -602,9 +348,6 @@ public class MainActivity extends AppCompatActivity {
                         case "+":
                             isSolved = String.valueOf(a+b);
                             break;
-                        case "-":
-                            isSolved = String.valueOf(a-b);
-                            break;
                         case "x":
                             isSolved = String.valueOf(a*b);
                             break;
@@ -615,7 +358,7 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("This is the new equation: " + newEquation);
                     System.out.println("This is the new equation plus solved: " + newEquation + isSolved);
                     String currentSolved = newEquation + isSolved;
-                    if (currentSolved.contains("+") || currentSolved.contains("-") || currentSolved.contains("x") || currentSolved.contains("/")) {
+                    if (currentSolved.contains("+") || currentSolved.contains("x") || currentSolved.contains("/")) {
                         backgroundSequence = backgroundSequence.replace(backgroundSequence.substring(indexInnermostOParenthesis+1,indexInnermostCParenthesis),currentSolved);
                         System.out.println("Current equation: " + backgroundSequence);
                     }
@@ -635,9 +378,6 @@ public class MainActivity extends AppCompatActivity {
                         case "+":
                             isSolved = String.valueOf(a+b);
                             break;
-                        case "-":
-                            isSolved = String.valueOf(a-b);
-                            break;
                         case "x":
                             isSolved = String.valueOf(a*b);
                             break;
@@ -649,7 +389,7 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("This is the new equation (no groupings): " + "()" + newEquation2);
                     System.out.println("This is the new equation plus solved: " + isSolved + newEquation2);
                     String currentSolved = isSolved + newEquation2;
-                    if (currentSolved.contains("+") || currentSolved.contains("-") || currentSolved.contains("x") || currentSolved.contains("/")) {
+                    if (currentSolved.contains("+") || currentSolved.contains("x") || currentSolved.contains("/")) {
                         backgroundSequence = backgroundSequence.replace(backgroundSequence.substring(indexInnermostOParenthesis+1,indexInnermostCParenthesis),currentSolved);
                         System.out.println("Current equation: " + backgroundSequence);
                     }
@@ -665,9 +405,6 @@ public class MainActivity extends AppCompatActivity {
                         case "+":
                             isSolved = String.valueOf(a+b);
                             break;
-                        case "-":
-                            isSolved = String.valueOf(a-b);
-                            break;
                         case "x":
                             isSolved = String.valueOf(a*b);
                             break;
@@ -677,7 +414,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     System.out.println("This is the new equation plus solved: " + isSolved);
                     String currentSolved = isSolved;
-                    if (currentSolved.contains("+") || currentSolved.contains("-") || currentSolved.contains("x") || currentSolved.contains("/")) {
+                    if (currentSolved.contains("+") || currentSolved.contains("x") || currentSolved.contains("/")) {
                         backgroundSequence = backgroundSequence.replace(backgroundSequence.substring(indexInnermostOParenthesis+1,indexInnermostCParenthesis),currentSolved);
                         System.out.println("Current equation: " + backgroundSequence);
                     }
@@ -688,49 +425,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            lastIndex = -1;
-            nextIndex = -1;
-
-            txtViewBig.setText(backgroundSequence);
         }
 
 
-
         else {
-            //get current operation
-            int operandIndex = testToSolve.lastIndexOf(op);
-            System.out.println("Last index of " + op + ": " + operandIndex);
-
-            //check operation/s at left of current operation
-            if (testToSolve.contains("+") || testToSolve.contains("-") || testToSolve.contains("x") || testToSolve.contains("/")) {
-                for (int i=0;i<operandIndex;i++) {
-                    if (testToSolve.charAt(i) == '+' || testToSolve.charAt(i) == '-' || testToSolve.charAt(i) == 'x' || testToSolve.charAt(i) == '/') {
-                        lastIndex = i;
-                    }
-                }
-            }
-            int beforeOperandIndex = lastIndex;
-            System.out.println("Index of possible op before current opIndex: " + beforeOperandIndex);
-
-            //check operation/s at right of current operation
-            if (testToSolve.contains("+") || testToSolve.contains("-") || testToSolve.contains("x") || testToSolve.contains("/")) {
-                for (int i=testToSolve.length()-1;i>operandIndex;i--) {
-                    if (testToSolve.charAt(i) == '+' || testToSolve.charAt(i) == '-' || testToSolve.charAt(i) == 'x' || testToSolve.charAt(i) == '/') {
-                        nextIndex = i;
-                    }
-                }
-            }
-            int afterOperandIndex = nextIndex;
-            System.out.println("Index of possible op before after opIndex: " + afterOperandIndex);
-
-
-//                        int a = Integer.parseInt(testToSolve.substring(0,operandIndex));
-//                        int b = Integer.parseInt(testToSolve.substring(operandIndex+1,afterOperandIndex));
-//                        String newEquation = backgroundSequence.substring(0,afterOperandIndex+1).trim();
-//                        String isSolved = String.valueOf(a+b);
-//                        System.out.println("This is the new equation (no groupings): " + newEquation);
-//                        System.out.println("This is the new equation plus solved: " + newEquation + isSolved);
-//                        backgroundSequence = newEquation + isSolved;
 
             //solving w/ respect to the indexes
             if (beforeOperandIndex != -1) { //if left operand exists
@@ -743,9 +441,6 @@ public class MainActivity extends AppCompatActivity {
                     switch (op) {
                         case "+":
                             isSolved = String.valueOf(a+b);
-                            break;
-                        case "-":
-                            isSolved = String.valueOf(a-b);
                             break;
                         case "x":
                             isSolved = String.valueOf(a*b);
@@ -764,9 +459,6 @@ public class MainActivity extends AppCompatActivity {
                     switch (op) {
                         case "+":
                             isSolved = String.valueOf(a+b);
-                            break;
-                        case "-":
-                            isSolved = String.valueOf(a-b);
                             break;
                         case "x":
                             isSolved = String.valueOf(a*b);
@@ -790,9 +482,6 @@ public class MainActivity extends AppCompatActivity {
                         case "+":
                             isSolved = String.valueOf(a+b);
                             break;
-                        case "-":
-                            isSolved = String.valueOf(a-b);
-                            break;
                         case "x":
                             isSolved = String.valueOf(a*b);
                             break;
@@ -811,9 +500,6 @@ public class MainActivity extends AppCompatActivity {
                         case "+":
                             isSolved = String.valueOf(a+b);
                             break;
-                        case "-":
-                            isSolved = String.valueOf(a-b);
-                            break;
                         case "x":
                             isSolved = String.valueOf(a*b);
                             break;
@@ -826,11 +512,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            lastIndex = -1;
-            nextIndex = -1;
-
-            txtViewBig.setText(backgroundSequence);
         }
+        lastIndex = -1;
+        nextIndex = -1;
+        txtViewBig.setText(backgroundSequence);
+        System.out.println(txtViewBig.getText());
 
     }
 
