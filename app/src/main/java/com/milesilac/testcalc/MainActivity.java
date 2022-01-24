@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println((2+3)*(5+3));
         System.out.println((37+3)/(5+3));
         System.out.println(4/2*6-3+2);
+        System.out.println(5%2);
     }
 
 
@@ -102,6 +103,14 @@ public class MainActivity extends AppCompatActivity {
                 txtViewSmall.setText(txtViewSmall.getText()+"/");
                 backgroundSequence = backgroundSequence.trim() + "/";
                 break;
+            case R.id.btnPercent:
+                txtViewSmall.setText(txtViewSmall.getText()+"%");
+                backgroundSequence = backgroundSequence.trim() + "%";
+                break;
+            case R.id.btnDot:
+                txtViewSmall.setText(txtViewSmall.getText()+".");
+                backgroundSequence = backgroundSequence.trim() + ".";
+                break;
             case R.id.btnParenthesis:
                 toCheckParenthesis();
                 break;
@@ -110,6 +119,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.btnC:
                 toClear();
+                break;
+            case R.id.btnQuit:
+                finish();
                 break;
 
         }
@@ -137,12 +149,20 @@ public class MainActivity extends AppCompatActivity {
                             toSolve(testToSolve,"/",true);
                         }
 
+                        if (testToSolve.contains("%")) {
+                            toSolve(testToSolve,"%",true);
+                        }
+
                         if (testToSolve.contains("+")) {
                             toSolve(testToSolve,"+",true);
                         }
 
+                        else {
+                            backgroundSequence = backgroundSequence.replace(backgroundSequence.substring(indexInnermostOParenthesis,indexInnermostCParenthesis+1),testToSolve);
+                        }
+
                 }
-                while (backgroundSequence.contains("+") || backgroundSequence.contains("x") || backgroundSequence.contains("/")) {
+                while (backgroundSequence.contains("+") || backgroundSequence.contains("x") || backgroundSequence.contains("/") || backgroundSequence.contains("%")) {
                     String testToSolve = backgroundSequence;
 
 
@@ -153,6 +173,11 @@ public class MainActivity extends AppCompatActivity {
 
                     while (testToSolve.contains("/")) {
                         toSolve(testToSolve,"/",false);
+                        testToSolve = backgroundSequence;
+                    }
+
+                    while (testToSolve.contains("%")) {
+                        toSolve(testToSolve,"%",false);
                         testToSolve = backgroundSequence;
                     }
 
@@ -164,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 }
             else {
-                while (backgroundSequence.contains("+") || backgroundSequence.contains("x") || backgroundSequence.contains("/")) {
+                while (backgroundSequence.contains("+") || backgroundSequence.contains("x") || backgroundSequence.contains("/") || backgroundSequence.contains("%")) {
                     String testToSolve = backgroundSequence;
 
 
@@ -178,6 +203,11 @@ public class MainActivity extends AppCompatActivity {
                         testToSolve = backgroundSequence;
                     }
 
+                    while (testToSolve.contains("%")) {
+                        toSolve(testToSolve,"%",false);
+                        testToSolve = backgroundSequence;
+                    }
+
                     while (testToSolve.contains("+")) {
                         toSolve(testToSolve,"+",false);
                         testToSolve = backgroundSequence;
@@ -185,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             }
-            backgroundSequence = txtViewSmall.getText().toString().trim();
+//            backgroundSequence = txtViewSmall.getText().toString().trim();
         }
         else {
             Toast.makeText(this,"Grouping Error; please check amount of parentheses",Toast.LENGTH_LONG).show();
@@ -208,6 +238,9 @@ public class MainActivity extends AppCompatActivity {
            backgroundSequence = tempString;
            Toast.makeText(this, "clear in process", Toast.LENGTH_SHORT).show();
            System.out.println("This is the old String:" + tempString);
+        }
+        else {
+            txtViewBig.setText("0".trim());
         }
     }
 
@@ -285,9 +318,9 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("Last index of " + op + ": " + operandIndex);
 
         //check operation/s at left of current operation
-        if (testToSolve.contains("+") || testToSolve.contains("x") || testToSolve.contains("/")) {
+        if (testToSolve.contains("+") || testToSolve.contains("x") || testToSolve.contains("/") || testToSolve.contains("%")) {
             for (int i=0;i<operandIndex;i++) {
-                if (testToSolve.charAt(i) == '+' || testToSolve.charAt(i) == 'x' || testToSolve.charAt(i) == '/') {
+                if (testToSolve.charAt(i) == '+' || testToSolve.charAt(i) == 'x' || testToSolve.charAt(i) == '/' || testToSolve.charAt(i) == '%') {
                     lastIndex = i;
                 }
             }
@@ -296,7 +329,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("Index of possible op before current opIndex: " + beforeOperandIndex);
 
         //check operation/s at right of current operation
-        if (testToSolve.contains("+") || testToSolve.contains("x") || testToSolve.contains("/")) {
+        if (testToSolve.contains("+") || testToSolve.contains("x") || testToSolve.contains("/") || testToSolve.contains("%")) {
             for (int i=testToSolve.length()-1;i>operandIndex;i--) {
                 if (testToSolve.charAt(i) == '+' || testToSolve.charAt(i) == 'x' || testToSolve.charAt(i) == '/') {
                     nextIndex = i;
@@ -311,12 +344,12 @@ public class MainActivity extends AppCompatActivity {
 
             //solving w/ respect to the indexes
             if (beforeOperandIndex != -1) { //if left operand exists
-                int a = Integer.parseInt(testToSolve.substring(beforeOperandIndex+1,operandIndex));
-                int b;
+                float a = Float.parseFloat(testToSolve.substring(beforeOperandIndex+1,operandIndex));
+                float b;
                 String newEquation = testToSolve.substring(0,beforeOperandIndex+1).trim();
                 String newEquation2;
                 if (afterOperandIndex != -1) { //if right operand exists
-                    b = Integer.parseInt(testToSolve.substring(operandIndex+1,afterOperandIndex));
+                    b = Float.parseFloat(testToSolve.substring(operandIndex+1,afterOperandIndex));
                     switch (op) {
                         case "+":
                             isSolved = String.valueOf(a+b);
@@ -327,12 +360,15 @@ public class MainActivity extends AppCompatActivity {
                         case "/":
                             isSolved = String.valueOf(a/b);
                             break;
+                        case "%":
+                            isSolved = String.valueOf(a%b);
+                            break;
                     }
                     newEquation2 = testToSolve.substring(afterOperandIndex).trim();
                     System.out.println("This is the new equation (with groupings): " + newEquation + "()" + newEquation2);
                     System.out.println("This is the new equation plus solved: " + newEquation + isSolved + newEquation2);
                     String currentSolved = newEquation + isSolved + newEquation2;
-                    if (currentSolved.contains("+") || currentSolved.contains("x") || currentSolved.contains("/")) {
+                    if (currentSolved.contains("+") || currentSolved.contains("x") || currentSolved.contains("/") || currentSolved.contains("%")) {
                         backgroundSequence = backgroundSequence.replace(backgroundSequence.substring(indexInnermostOParenthesis+1,indexInnermostCParenthesis),currentSolved);
                         System.out.println("Current equation: " + backgroundSequence);
                     }
@@ -343,7 +379,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 else { //if right operand does not exist
-                    b = Integer.parseInt(testToSolve.substring(operandIndex+1));
+                    b = Float.parseFloat(testToSolve.substring(operandIndex+1));
                     switch (op) {
                         case "+":
                             isSolved = String.valueOf(a+b);
@@ -354,11 +390,14 @@ public class MainActivity extends AppCompatActivity {
                         case "/":
                             isSolved = String.valueOf(a/b);
                             break;
+                        case "%":
+                            isSolved = String.valueOf(a%b);
+                            break;
                     }
                     System.out.println("This is the new equation: " + newEquation);
                     System.out.println("This is the new equation plus solved: " + newEquation + isSolved);
                     String currentSolved = newEquation + isSolved;
-                    if (currentSolved.contains("+") || currentSolved.contains("x") || currentSolved.contains("/")) {
+                    if (currentSolved.contains("+") || currentSolved.contains("x") || currentSolved.contains("/") || currentSolved.contains("%")) {
                         backgroundSequence = backgroundSequence.replace(backgroundSequence.substring(indexInnermostOParenthesis+1,indexInnermostCParenthesis),currentSolved);
                         System.out.println("Current equation: " + backgroundSequence);
                     }
@@ -369,11 +408,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             else { //if left operand does not exist
-                int a = Integer.parseInt(testToSolve.substring(0,operandIndex));
-                int b;
+                float a = Float.parseFloat(testToSolve.substring(0,operandIndex));
+                float b;
                 String newEquation2;
                 if (afterOperandIndex != -1) { //if right operand exists
-                    b = Integer.parseInt(testToSolve.substring(operandIndex+1,afterOperandIndex));
+                    b = Float.parseFloat(testToSolve.substring(operandIndex+1,afterOperandIndex));
                     switch (op) {
                         case "+":
                             isSolved = String.valueOf(a+b);
@@ -384,12 +423,15 @@ public class MainActivity extends AppCompatActivity {
                         case "/":
                             isSolved = String.valueOf(a/b);
                             break;
+                        case "%":
+                            isSolved = String.valueOf(a%b);
+                            break;
                     }
                     newEquation2 = testToSolve.substring(afterOperandIndex).trim();
                     System.out.println("This is the new equation (no groupings): " + "()" + newEquation2);
                     System.out.println("This is the new equation plus solved: " + isSolved + newEquation2);
                     String currentSolved = isSolved + newEquation2;
-                    if (currentSolved.contains("+") || currentSolved.contains("x") || currentSolved.contains("/")) {
+                    if (currentSolved.contains("+") || currentSolved.contains("x") || currentSolved.contains("/") || currentSolved.contains("%")) {
                         backgroundSequence = backgroundSequence.replace(backgroundSequence.substring(indexInnermostOParenthesis+1,indexInnermostCParenthesis),currentSolved);
                         System.out.println("Current equation: " + backgroundSequence);
                     }
@@ -400,7 +442,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 else { //if right operand does not exist
-                    b = Integer.parseInt(testToSolve.substring(operandIndex+1));
+                    b = Float.parseFloat(testToSolve.substring(operandIndex+1));
                     switch (op) {
                         case "+":
                             isSolved = String.valueOf(a+b);
@@ -411,10 +453,13 @@ public class MainActivity extends AppCompatActivity {
                         case "/":
                             isSolved = String.valueOf(a/b);
                             break;
+                        case "%":
+                            isSolved = String.valueOf(a%b);
+                            break;
                     }
                     System.out.println("This is the new equation plus solved: " + isSolved);
                     String currentSolved = isSolved;
-                    if (currentSolved.contains("+") || currentSolved.contains("x") || currentSolved.contains("/")) {
+                    if (currentSolved.contains("+") || currentSolved.contains("x") || currentSolved.contains("/") || currentSolved.contains("%")) {
                         backgroundSequence = backgroundSequence.replace(backgroundSequence.substring(indexInnermostOParenthesis+1,indexInnermostCParenthesis),currentSolved);
                         System.out.println("Current equation: " + backgroundSequence);
                     }
@@ -432,12 +477,12 @@ public class MainActivity extends AppCompatActivity {
 
             //solving w/ respect to the indexes
             if (beforeOperandIndex != -1) { //if left operand exists
-                int a = Integer.parseInt(testToSolve.substring(beforeOperandIndex+1,operandIndex));
-                int b;
+                float a = Float.parseFloat(testToSolve.substring(beforeOperandIndex+1,operandIndex));
+                float b;
                 String newEquation = backgroundSequence.substring(0,beforeOperandIndex+1).trim();
                 String newEquation2;
                 if (afterOperandIndex != -1) { //if right operand exists
-                    b = Integer.parseInt(testToSolve.substring(operandIndex+1,afterOperandIndex));
+                    b = Float.parseFloat(testToSolve.substring(operandIndex+1,afterOperandIndex));
                     switch (op) {
                         case "+":
                             isSolved = String.valueOf(a+b);
@@ -447,6 +492,9 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case "/":
                             isSolved = String.valueOf(a/b);
+                            break;
+                        case "%":
+                            isSolved = String.valueOf(a%b);
                             break;
                     }
                     newEquation2 = backgroundSequence.substring(afterOperandIndex).trim();
@@ -455,7 +503,7 @@ public class MainActivity extends AppCompatActivity {
                     backgroundSequence = newEquation + isSolved + newEquation2;
                 }
                 else { //if right operand does not exist
-                    b = Integer.parseInt(testToSolve.substring(operandIndex+1));
+                    b = Float.parseFloat(testToSolve.substring(operandIndex+1));
                     switch (op) {
                         case "+":
                             isSolved = String.valueOf(a+b);
@@ -465,6 +513,9 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case "/":
                             isSolved = String.valueOf(a/b);
+                            break;
+                        case "%":
+                            isSolved = String.valueOf(a%b);
                             break;
                     }
                     System.out.println("This is the new equation (no groupings): " + newEquation);
@@ -473,11 +524,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             else { //if left operand does not exist
-                int a = Integer.parseInt(testToSolve.substring(0,operandIndex));
-                int b;
+                float a = Float.parseFloat(testToSolve.substring(0,operandIndex));
+                float b;
                 String newEquation2;
                 if (afterOperandIndex != -1) { //if right operand exists
-                    b = Integer.parseInt(testToSolve.substring(operandIndex+1,afterOperandIndex));
+                    b = Float.parseFloat(testToSolve.substring(operandIndex+1,afterOperandIndex));
                     switch (op) {
                         case "+":
                             isSolved = String.valueOf(a+b);
@@ -487,6 +538,9 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case "/":
                             isSolved = String.valueOf(a/b);
+                            break;
+                        case "%":
+                            isSolved = String.valueOf(a%b);
                             break;
                     }
                     newEquation2 = backgroundSequence.substring(afterOperandIndex).trim();
@@ -495,7 +549,7 @@ public class MainActivity extends AppCompatActivity {
                     backgroundSequence = isSolved + newEquation2;
                 }
                 else { //if right operand does not exist
-                    b = Integer.parseInt(testToSolve.substring(operandIndex+1));
+                    b = Float.parseFloat(testToSolve.substring(operandIndex+1));
                     switch (op) {
                         case "+":
                             isSolved = String.valueOf(a+b);
@@ -505,6 +559,9 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case "/":
                             isSolved = String.valueOf(a/b);
+                            break;
+                        case "%":
+                            isSolved = String.valueOf(a%b);
                             break;
                     }
                     System.out.println("This is the new equation plus solved: " + isSolved);
@@ -515,6 +572,16 @@ public class MainActivity extends AppCompatActivity {
         }
         lastIndex = -1;
         nextIndex = -1;
+
+        if (!backgroundSequence.contains("+") && !backgroundSequence.contains("x") && !backgroundSequence.contains("/") && !backgroundSequence.contains("%")) {
+            if (backgroundSequence.contains(".")) {
+                int dotCheck = backgroundSequence.indexOf(".");
+                String decimalValue = backgroundSequence.substring(dotCheck+1);
+                if (Integer.parseInt(decimalValue) == 0) {
+                    backgroundSequence = backgroundSequence.substring(0,dotCheck);
+                }
+            }
+        }
         txtViewBig.setText(backgroundSequence);
         System.out.println(txtViewBig.getText());
 
