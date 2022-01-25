@@ -1,24 +1,14 @@
 package com.milesilac.testcalc;
 
-import static android.widget.TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.widget.TextViewCompat;
+
 
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.widget.Button;
 import android.widget.HorizontalScrollView;
-import android.widget.Scroller;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.material.snackbar.Snackbar;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     int indexInnermostOParenthesis;
     int indexInnermostCParenthesis;
     String isSolved;
+    int determineOps = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +36,8 @@ public class MainActivity extends AppCompatActivity {
         scroll = findViewById(R.id.scroll);
 
 
-        System.out.println(2+3*5+3);
-        System.out.println((2+3)*(5+3));
-        System.out.println((37+3)/(5+3));
-        System.out.println(4/2*6-3+2);
-        System.out.println(5%2);
+
     }
-
-
 
 
     public void onClick (View v) {
@@ -141,81 +126,225 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("First priority to solve: " + testToSolve);
 
 
+                    if (testToSolve.contains("x") || testToSolve.contains("/") || testToSolve.contains("%")) {
                         if (testToSolve.contains("x")) {
-                            toSolve(testToSolve,"x",true);
+                            determineOps = determineOps + 2;
                         }
 
                         if (testToSolve.contains("/")) {
-                            toSolve(testToSolve,"/",true);
+                            determineOps = determineOps + 3;
                         }
 
                         if (testToSolve.contains("%")) {
-                            toSolve(testToSolve,"%",true);
+                            determineOps = determineOps + 4;
                         }
-
-                        if (testToSolve.contains("+")) {
-                            toSolve(testToSolve,"+",true);
+                        System.out.println("Current value of determine ops: " + determineOps);
+                        switch (determineOps) {
+                            case 2:
+                                toSolve(testToSolve,"x",true);
+                                break;
+                            case 3:
+                                toSolve(testToSolve,"/",true);
+                                break;
+                            case 4:
+                                toSolve(testToSolve,"%",true);
+                                break;
+                            case 5:
+                                if (testToSolve.indexOf("x") < testToSolve.indexOf("/")) {
+                                    toSolve(testToSolve,"x",true);
+                                }
+                                if (testToSolve.indexOf("/") < testToSolve.indexOf("x")) {
+                                    toSolve(testToSolve,"/",true);
+                                }
+                                break;
+                            case 6:
+                                if (testToSolve.indexOf("x") < testToSolve.indexOf("%")) {
+                                    toSolve(testToSolve,"x",true);
+                                }
+                                if (testToSolve.indexOf("%") < testToSolve.indexOf("x")) {
+                                    toSolve(testToSolve,"%",true);
+                                }
+                                break;
+                            case 7:
+                                if (testToSolve.indexOf("/") < testToSolve.indexOf("%")) {
+                                    toSolve(testToSolve,"/",true);
+                                }
+                                if (testToSolve.indexOf("%") < testToSolve.indexOf("/")) {
+                                    toSolve(testToSolve,"%",true);
+                                }
+                                break;
+                            case 9:
+                                if (testToSolve.indexOf("x") < testToSolve.indexOf("%") && testToSolve.indexOf("x") < testToSolve.indexOf("/")) {
+                                    toSolve(testToSolve,"x",true);
+                                }
+                                if (testToSolve.indexOf("%") < testToSolve.indexOf("x") && testToSolve.indexOf("%") < testToSolve.indexOf("/")) {
+                                    toSolve(testToSolve,"%",true);
+                                }
+                                if (testToSolve.indexOf("/") < testToSolve.indexOf("x") && testToSolve.indexOf("/") < testToSolve.indexOf("%")) {
+                                    toSolve(testToSolve,"/",true);
+                                }
+                                break;
                         }
+                    }
 
-                        else {
-                            backgroundSequence = backgroundSequence.replace(backgroundSequence.substring(indexInnermostOParenthesis,indexInnermostCParenthesis+1),testToSolve);
-                        }
+                    else if (testToSolve.contains("+")) {
+                        toSolve(testToSolve,"+",true);
+                    }
 
+                    else {
+                        backgroundSequence = backgroundSequence.replace(backgroundSequence.substring(indexInnermostOParenthesis,indexInnermostCParenthesis+1),testToSolve);
+                        System.out.println("This was chosen");
+                    }
+
+                    determineOps = 0;
                 }
                 while (backgroundSequence.contains("+") || backgroundSequence.contains("x") || backgroundSequence.contains("/") || backgroundSequence.contains("%")) {
                     String testToSolve = backgroundSequence;
+                    System.out.println("Sequence now solving (1): " + testToSolve);
 
 
-                    while (testToSolve.contains("x")) {
-                        toSolve(testToSolve,"x",false);
-                        testToSolve = backgroundSequence;
+                    if (testToSolve.contains("x") || testToSolve.contains("/") || testToSolve.contains("%")) {
+                        if (testToSolve.contains("x")) {
+                            determineOps = determineOps + 2;
+                        }
+
+                        if (testToSolve.contains("/")) {
+                            determineOps = determineOps + 3;
+                        }
+
+                        if (testToSolve.contains("%")) {
+                            determineOps = determineOps + 4;
+                        }
+                        System.out.println("Current value of determine ops: " + determineOps);
+                        switch (determineOps) {
+                            case 2:
+                                toSolve(testToSolve,"x",false);
+                                break;
+                            case 3:
+                                toSolve(testToSolve,"/",false);
+                                break;
+                            case 4:
+                                toSolve(testToSolve,"%",false);
+                                break;
+                            case 5:
+                                if (testToSolve.indexOf("x") < testToSolve.indexOf("/")) {
+                                    toSolve(testToSolve,"x",false);
+                                }
+                                if (testToSolve.indexOf("/") < testToSolve.indexOf("x")) {
+                                    toSolve(testToSolve,"/",false);
+                                }
+                                break;
+                            case 6:
+                                if (testToSolve.indexOf("x") < testToSolve.indexOf("%")) {
+                                    toSolve(testToSolve,"x",false);
+                                }
+                                if (testToSolve.indexOf("%") < testToSolve.indexOf("x")) {
+                                    toSolve(testToSolve,"%",false);
+                                }
+                                break;
+                            case 7:
+                                if (testToSolve.indexOf("/") < testToSolve.indexOf("%")) {
+                                    toSolve(testToSolve,"/",false);
+                                }
+                                if (testToSolve.indexOf("%") < testToSolve.indexOf("/")) {
+                                    toSolve(testToSolve,"%",false);
+                                }
+                                break;
+                            case 9:
+                                if (testToSolve.indexOf("x") < testToSolve.indexOf("%") && testToSolve.indexOf("x") < testToSolve.indexOf("/")) {
+                                    toSolve(testToSolve,"x",false);
+                                }
+                                if (testToSolve.indexOf("%") < testToSolve.indexOf("x") && testToSolve.indexOf("%") < testToSolve.indexOf("/")) {
+                                    toSolve(testToSolve,"%",false);
+                                }
+                                if (testToSolve.indexOf("/") < testToSolve.indexOf("x") && testToSolve.indexOf("/") < testToSolve.indexOf("%")) {
+                                    toSolve(testToSolve,"/",false);
+                                }
+                                break;
+                        }
                     }
 
-                    while (testToSolve.contains("/")) {
-                        toSolve(testToSolve,"/",false);
-                        testToSolve = backgroundSequence;
-                    }
 
-                    while (testToSolve.contains("%")) {
-                        toSolve(testToSolve,"%",false);
-                        testToSolve = backgroundSequence;
-                    }
-
-                    while (testToSolve.contains("+")) {
+                    else if (testToSolve.contains("+")) {
                         toSolve(testToSolve,"+",false);
-                        testToSolve = backgroundSequence;
                     }
-
+                    determineOps = 0;
                 }
                 }
             else {
                 while (backgroundSequence.contains("+") || backgroundSequence.contains("x") || backgroundSequence.contains("/") || backgroundSequence.contains("%")) {
                     String testToSolve = backgroundSequence;
+                    System.out.println("Sequence now solving (2): " + testToSolve);
 
 
-                    while (testToSolve.contains("x")) {
-                        toSolve(testToSolve,"x",false);
-                        testToSolve = backgroundSequence;
+                    if (testToSolve.contains("x") || testToSolve.contains("/") || testToSolve.contains("%")) {
+                        if (testToSolve.contains("x")) {
+                            determineOps = determineOps + 2;
+                        }
+
+                        if (testToSolve.contains("/")) {
+                            determineOps = determineOps + 3;
+                        }
+
+                        if (testToSolve.contains("%")) {
+                            determineOps = determineOps + 4;
+                        }
+                        System.out.println("Current value of determine ops: " + determineOps);
+                        switch (determineOps) {
+                            case 2:
+                                toSolve(testToSolve,"x",false);
+                                break;
+                            case 3:
+                                toSolve(testToSolve,"/",false);
+                                break;
+                            case 4:
+                                toSolve(testToSolve,"%",false);
+                                break;
+                            case 5:
+                                if (testToSolve.indexOf("x") < testToSolve.indexOf("/")) {
+                                    toSolve(testToSolve,"x",false);
+                                }
+                                if (testToSolve.indexOf("/") < testToSolve.indexOf("x")) {
+                                    toSolve(testToSolve,"/",false);
+                                }
+                                break;
+                            case 6:
+                                if (testToSolve.indexOf("x") < testToSolve.indexOf("%")) {
+                                    toSolve(testToSolve,"x",false);
+                                }
+                                if (testToSolve.indexOf("%") < testToSolve.indexOf("x")) {
+                                    toSolve(testToSolve,"%",false);
+                                }
+                                break;
+                            case 7:
+                                if (testToSolve.indexOf("/") < testToSolve.indexOf("%")) {
+                                    toSolve(testToSolve,"/",false);
+                                }
+                                if (testToSolve.indexOf("%") < testToSolve.indexOf("/")) {
+                                    toSolve(testToSolve,"%",false);
+                                }
+                                break;
+                            case 9:
+                                if (testToSolve.indexOf("x") < testToSolve.indexOf("%") && testToSolve.indexOf("x") < testToSolve.indexOf("/")) {
+                                    toSolve(testToSolve,"x",false);
+                                }
+                                if (testToSolve.indexOf("%") < testToSolve.indexOf("x") && testToSolve.indexOf("%") < testToSolve.indexOf("/")) {
+                                    toSolve(testToSolve,"%",false);
+                                }
+                                if (testToSolve.indexOf("/") < testToSolve.indexOf("x") && testToSolve.indexOf("/") < testToSolve.indexOf("%")) {
+                                    toSolve(testToSolve,"/",false);
+                                }
+                                break;
+                        }
                     }
 
-                    while (testToSolve.contains("/")) {
-                        toSolve(testToSolve,"/",false);
-                        testToSolve = backgroundSequence;
-                    }
 
-                    while (testToSolve.contains("%")) {
-                        toSolve(testToSolve,"%",false);
-                        testToSolve = backgroundSequence;
-                    }
-
-                    while (testToSolve.contains("+")) {
+                    else if (testToSolve.contains("+")) {
                         toSolve(testToSolve,"+",false);
-                        testToSolve = backgroundSequence;
                     }
-
+                    determineOps = 0;
                 }
             }
-//            backgroundSequence = txtViewSmall.getText().toString().trim();
         }
         else {
             Toast.makeText(this,"Grouping Error; please check amount of parentheses",Toast.LENGTH_LONG).show();
@@ -307,14 +436,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-
     public void toSolve(String testToSolve, String op, boolean hasParenthesis) {
 
         //-- get indexes
         //get current operation
-        int operandIndex = testToSolve.lastIndexOf(op);
+        int operandIndex = testToSolve.indexOf(op);
         System.out.println("Last index of " + op + ": " + operandIndex);
 
         //check operation/s at left of current operation
@@ -341,14 +467,16 @@ public class MainActivity extends AppCompatActivity {
         //--
 
         if (hasParenthesis) {
-
+            System.out.println("Solving under parenthesis");
             //solving w/ respect to the indexes
             if (beforeOperandIndex != -1) { //if left operand exists
+                System.out.println("Solving under parenthesis, left operand exists");
                 float a = Float.parseFloat(testToSolve.substring(beforeOperandIndex+1,operandIndex));
                 float b;
                 String newEquation = testToSolve.substring(0,beforeOperandIndex+1).trim();
                 String newEquation2;
                 if (afterOperandIndex != -1) { //if right operand exists
+                    System.out.println("Solving under parenthesis, left operand exists, right operand exists");
                     b = Float.parseFloat(testToSolve.substring(operandIndex+1,afterOperandIndex));
                     switch (op) {
                         case "+":
@@ -379,6 +507,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 else { //if right operand does not exist
+                    System.out.println("Solving under parenthesis, left operand exists, right operand does not exist");
                     b = Float.parseFloat(testToSolve.substring(operandIndex+1));
                     switch (op) {
                         case "+":
@@ -408,10 +537,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             else { //if left operand does not exist
+                System.out.println("Solving under parenthesis, left operand does not exist");
                 float a = Float.parseFloat(testToSolve.substring(0,operandIndex));
                 float b;
                 String newEquation2;
                 if (afterOperandIndex != -1) { //if right operand exists
+                    System.out.println("Solving under parenthesis, left operand does not exist, right operand exists");
                     b = Float.parseFloat(testToSolve.substring(operandIndex+1,afterOperandIndex));
                     switch (op) {
                         case "+":
@@ -442,6 +573,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 else { //if right operand does not exist
+                    System.out.println("Solving under parenthesis, left operand does not exist, right operand does not exist");
                     b = Float.parseFloat(testToSolve.substring(operandIndex+1));
                     switch (op) {
                         case "+":
@@ -474,14 +606,16 @@ public class MainActivity extends AppCompatActivity {
 
 
         else {
-
+            System.out.println("Solving NOT under parenthesis");
             //solving w/ respect to the indexes
             if (beforeOperandIndex != -1) { //if left operand exists
+                System.out.println("Solving NOT under parenthesis, left operand exists");
                 float a = Float.parseFloat(testToSolve.substring(beforeOperandIndex+1,operandIndex));
                 float b;
                 String newEquation = backgroundSequence.substring(0,beforeOperandIndex+1).trim();
                 String newEquation2;
                 if (afterOperandIndex != -1) { //if right operand exists
+                    System.out.println("Solving NOT under parenthesis, left operand exists, right operand exists");
                     b = Float.parseFloat(testToSolve.substring(operandIndex+1,afterOperandIndex));
                     switch (op) {
                         case "+":
@@ -503,6 +637,7 @@ public class MainActivity extends AppCompatActivity {
                     backgroundSequence = newEquation + isSolved + newEquation2;
                 }
                 else { //if right operand does not exist
+                    System.out.println("Solving NOT under parenthesis, left operand exists, right operand does not exist");
                     b = Float.parseFloat(testToSolve.substring(operandIndex+1));
                     switch (op) {
                         case "+":
@@ -524,10 +659,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             else { //if left operand does not exist
+                System.out.println("Solving NOT under parenthesis, left operand does not exist");
                 float a = Float.parseFloat(testToSolve.substring(0,operandIndex));
                 float b;
                 String newEquation2;
                 if (afterOperandIndex != -1) { //if right operand exists
+                    System.out.println("Solving NOT under parenthesis, left operand does not exist, right operand exists");
                     b = Float.parseFloat(testToSolve.substring(operandIndex+1,afterOperandIndex));
                     switch (op) {
                         case "+":
@@ -549,6 +686,7 @@ public class MainActivity extends AppCompatActivity {
                     backgroundSequence = isSolved + newEquation2;
                 }
                 else { //if right operand does not exist
+                    System.out.println("Solving NOT under parenthesis, left operand does not exist, right operand does not exist");
                     b = Float.parseFloat(testToSolve.substring(operandIndex+1));
                     switch (op) {
                         case "+":
