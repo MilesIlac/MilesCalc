@@ -12,8 +12,8 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView txtViewSmall,txtViewBig;
-    HorizontalScrollView scroll;
+    private TextView txtViewSmall,txtViewBig;
+    private HorizontalScrollView scroll;
     boolean hasOpeningParenthesis = false;
     int OPCount = 0;
     int CPCount = 0;
@@ -364,7 +364,17 @@ public class MainActivity extends AppCompatActivity {
                CPCount--;
            }
            txtViewSmall.setText(tempString);
-           backgroundSequence = tempString;
+           if (tempString.contains("-")) {
+               for (int i=0;i<tempString.length()-1;i++) {
+                   if (tempString.charAt(i) == '-') {
+                       backgroundSequence = tempString.replace(tempString.substring(i,i+1),"+-");
+                   }
+               }
+           }
+           else {
+               backgroundSequence = tempString;
+           }
+
            Toast.makeText(this, "clear in process", Toast.LENGTH_SHORT).show();
            System.out.println("This is the old String:" + tempString);
         }
