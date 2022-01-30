@@ -6,14 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     private TextView txtViewSmall,txtViewBig;
-    private HorizontalScrollView scroll;
     boolean hasOpeningParenthesis = false;
     int OPCount = 0;
     int CPCount = 0;
@@ -33,9 +31,6 @@ public class MainActivity extends AppCompatActivity {
 
         txtViewSmall = findViewById(R.id.txtViewSmall);
         txtViewBig = findViewById(R.id.txtViewBig);
-        scroll = findViewById(R.id.scroll);
-
-
 
     }
 
@@ -73,27 +68,33 @@ public class MainActivity extends AppCompatActivity {
                 toInputChar("9");
                 break;
             case R.id.btnAdd:
-                txtViewSmall.setText(txtViewSmall.getText()+"+");
+                String getTextPlus = txtViewSmall.getText()+"+";
+                txtViewSmall.setText(getTextPlus);
                 backgroundSequence = backgroundSequence.trim() + "+";
                 break;
             case R.id.btnSubt:
-                txtViewSmall.setText(txtViewSmall.getText()+"-");
+                String getTextMinus = txtViewSmall.getText()+"-";
+                txtViewSmall.setText(getTextMinus);
                 backgroundSequence = backgroundSequence.trim() + "+-";
                 break;
             case R.id.btnMult:
-                txtViewSmall.setText(txtViewSmall.getText()+"x");
-                backgroundSequence = backgroundSequence.trim() + "x";
+                String getTextMult = txtViewSmall.getText()+"×";
+                txtViewSmall.setText(getTextMult);
+                backgroundSequence = backgroundSequence.trim() + "×";
                 break;
             case R.id.btnDiv:
-                txtViewSmall.setText(txtViewSmall.getText()+"/");
-                backgroundSequence = backgroundSequence.trim() + "/";
+                String getTextDiv = txtViewSmall.getText()+"÷";
+                txtViewSmall.setText(getTextDiv);
+                backgroundSequence = backgroundSequence.trim() + "÷";
                 break;
             case R.id.btnPercent:
-                txtViewSmall.setText(txtViewSmall.getText()+"%");
+                String getTextMod = txtViewSmall.getText()+"%";
+                txtViewSmall.setText(getTextMod);
                 backgroundSequence = backgroundSequence.trim() + "%";
                 break;
             case R.id.btnDot:
-                txtViewSmall.setText(txtViewSmall.getText()+".");
+                String getTextDot = txtViewSmall.getText()+".";
+                txtViewSmall.setText(getTextDot);
                 backgroundSequence = backgroundSequence.trim() + ".";
                 break;
             case R.id.btnParenthesis:
@@ -126,12 +127,12 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("First priority to solve: " + testToSolve);
 
 
-                    if (testToSolve.contains("x") || testToSolve.contains("/") || testToSolve.contains("%")) {
-                        if (testToSolve.contains("x")) {
+                    if (testToSolve.contains("×") || testToSolve.contains("÷") || testToSolve.contains("%")) {
+                        if (testToSolve.contains("×")) {
                             determineOps = determineOps + 2;
                         }
 
-                        if (testToSolve.contains("/")) {
+                        if (testToSolve.contains("÷")) {
                             determineOps = determineOps + 3;
                         }
 
@@ -141,47 +142,47 @@ public class MainActivity extends AppCompatActivity {
                         System.out.println("Current value of determine ops: " + determineOps);
                         switch (determineOps) {
                             case 2:
-                                toSolve(testToSolve,"x",true);
+                                toSolve(testToSolve,"×",true);
                                 break;
                             case 3:
-                                toSolve(testToSolve,"/",true);
+                                toSolve(testToSolve,"÷",true);
                                 break;
                             case 4:
                                 toSolve(testToSolve,"%",true);
                                 break;
                             case 5:
-                                if (testToSolve.indexOf("x") < testToSolve.indexOf("/")) {
-                                    toSolve(testToSolve,"x",true);
+                                if (testToSolve.indexOf("×") < testToSolve.indexOf("÷")) {
+                                    toSolve(testToSolve,"×",true);
                                 }
-                                if (testToSolve.indexOf("/") < testToSolve.indexOf("x")) {
-                                    toSolve(testToSolve,"/",true);
+                                if (testToSolve.indexOf("÷") < testToSolve.indexOf("×")) {
+                                    toSolve(testToSolve,"÷",true);
                                 }
                                 break;
                             case 6:
-                                if (testToSolve.indexOf("x") < testToSolve.indexOf("%")) {
-                                    toSolve(testToSolve,"x",true);
+                                if (testToSolve.indexOf("×") < testToSolve.indexOf("%")) {
+                                    toSolve(testToSolve,"×",true);
                                 }
-                                if (testToSolve.indexOf("%") < testToSolve.indexOf("x")) {
+                                if (testToSolve.indexOf("%") < testToSolve.indexOf("×")) {
                                     toSolve(testToSolve,"%",true);
                                 }
                                 break;
                             case 7:
-                                if (testToSolve.indexOf("/") < testToSolve.indexOf("%")) {
-                                    toSolve(testToSolve,"/",true);
+                                if (testToSolve.indexOf("÷") < testToSolve.indexOf("%")) {
+                                    toSolve(testToSolve,"÷",true);
                                 }
-                                if (testToSolve.indexOf("%") < testToSolve.indexOf("/")) {
+                                if (testToSolve.indexOf("%") < testToSolve.indexOf("÷")) {
                                     toSolve(testToSolve,"%",true);
                                 }
                                 break;
                             case 9:
-                                if (testToSolve.indexOf("x") < testToSolve.indexOf("%") && testToSolve.indexOf("x") < testToSolve.indexOf("/")) {
-                                    toSolve(testToSolve,"x",true);
+                                if (testToSolve.indexOf("×") < testToSolve.indexOf("%") && testToSolve.indexOf("×") < testToSolve.indexOf("÷")) {
+                                    toSolve(testToSolve,"×",true);
                                 }
-                                if (testToSolve.indexOf("%") < testToSolve.indexOf("x") && testToSolve.indexOf("%") < testToSolve.indexOf("/")) {
+                                if (testToSolve.indexOf("%") < testToSolve.indexOf("×") && testToSolve.indexOf("%") < testToSolve.indexOf("÷")) {
                                     toSolve(testToSolve,"%",true);
                                 }
-                                if (testToSolve.indexOf("/") < testToSolve.indexOf("x") && testToSolve.indexOf("/") < testToSolve.indexOf("%")) {
-                                    toSolve(testToSolve,"/",true);
+                                if (testToSolve.indexOf("÷") < testToSolve.indexOf("×") && testToSolve.indexOf("÷") < testToSolve.indexOf("%")) {
+                                    toSolve(testToSolve,"÷",true);
                                 }
                                 break;
                         }
@@ -198,17 +199,17 @@ public class MainActivity extends AppCompatActivity {
 
                     determineOps = 0;
                 }
-                while (backgroundSequence.contains("+") || backgroundSequence.contains("x") || backgroundSequence.contains("/") || backgroundSequence.contains("%")) {
+                while (backgroundSequence.contains("+") || backgroundSequence.contains("×") || backgroundSequence.contains("÷") || backgroundSequence.contains("%")) {
                     String testToSolve = backgroundSequence;
                     System.out.println("Sequence now solving (1): " + testToSolve);
 
 
-                    if (testToSolve.contains("x") || testToSolve.contains("/") || testToSolve.contains("%")) {
-                        if (testToSolve.contains("x")) {
+                    if (testToSolve.contains("×") || testToSolve.contains("÷") || testToSolve.contains("%")) {
+                        if (testToSolve.contains("×")) {
                             determineOps = determineOps + 2;
                         }
 
-                        if (testToSolve.contains("/")) {
+                        if (testToSolve.contains("÷")) {
                             determineOps = determineOps + 3;
                         }
 
@@ -218,47 +219,47 @@ public class MainActivity extends AppCompatActivity {
                         System.out.println("Current value of determine ops: " + determineOps);
                         switch (determineOps) {
                             case 2:
-                                toSolve(testToSolve,"x",false);
+                                toSolve(testToSolve,"×",false);
                                 break;
                             case 3:
-                                toSolve(testToSolve,"/",false);
+                                toSolve(testToSolve,"÷",false);
                                 break;
                             case 4:
                                 toSolve(testToSolve,"%",false);
                                 break;
                             case 5:
-                                if (testToSolve.indexOf("x") < testToSolve.indexOf("/")) {
-                                    toSolve(testToSolve,"x",false);
+                                if (testToSolve.indexOf("×") < testToSolve.indexOf("÷")) {
+                                    toSolve(testToSolve,"×",false);
                                 }
-                                if (testToSolve.indexOf("/") < testToSolve.indexOf("x")) {
-                                    toSolve(testToSolve,"/",false);
+                                if (testToSolve.indexOf("÷") < testToSolve.indexOf("×")) {
+                                    toSolve(testToSolve,"÷",false);
                                 }
                                 break;
                             case 6:
-                                if (testToSolve.indexOf("x") < testToSolve.indexOf("%")) {
-                                    toSolve(testToSolve,"x",false);
+                                if (testToSolve.indexOf("×") < testToSolve.indexOf("%")) {
+                                    toSolve(testToSolve,"×",false);
                                 }
-                                if (testToSolve.indexOf("%") < testToSolve.indexOf("x")) {
+                                if (testToSolve.indexOf("%") < testToSolve.indexOf("×")) {
                                     toSolve(testToSolve,"%",false);
                                 }
                                 break;
                             case 7:
-                                if (testToSolve.indexOf("/") < testToSolve.indexOf("%")) {
-                                    toSolve(testToSolve,"/",false);
+                                if (testToSolve.indexOf("÷") < testToSolve.indexOf("%")) {
+                                    toSolve(testToSolve,"÷",false);
                                 }
-                                if (testToSolve.indexOf("%") < testToSolve.indexOf("/")) {
+                                if (testToSolve.indexOf("%") < testToSolve.indexOf("÷")) {
                                     toSolve(testToSolve,"%",false);
                                 }
                                 break;
                             case 9:
-                                if (testToSolve.indexOf("x") < testToSolve.indexOf("%") && testToSolve.indexOf("x") < testToSolve.indexOf("/")) {
-                                    toSolve(testToSolve,"x",false);
+                                if (testToSolve.indexOf("×") < testToSolve.indexOf("%") && testToSolve.indexOf("×") < testToSolve.indexOf("÷")) {
+                                    toSolve(testToSolve,"×",false);
                                 }
-                                if (testToSolve.indexOf("%") < testToSolve.indexOf("x") && testToSolve.indexOf("%") < testToSolve.indexOf("/")) {
+                                if (testToSolve.indexOf("%") < testToSolve.indexOf("×") && testToSolve.indexOf("%") < testToSolve.indexOf("÷")) {
                                     toSolve(testToSolve,"%",false);
                                 }
-                                if (testToSolve.indexOf("/") < testToSolve.indexOf("x") && testToSolve.indexOf("/") < testToSolve.indexOf("%")) {
-                                    toSolve(testToSolve,"/",false);
+                                if (testToSolve.indexOf("÷") < testToSolve.indexOf("×") && testToSolve.indexOf("÷") < testToSolve.indexOf("%")) {
+                                    toSolve(testToSolve,"÷",false);
                                 }
                                 break;
                         }
@@ -272,17 +273,17 @@ public class MainActivity extends AppCompatActivity {
                 }
                 }
             else {
-                while (backgroundSequence.contains("+") || backgroundSequence.contains("x") || backgroundSequence.contains("/") || backgroundSequence.contains("%")) {
+                while (backgroundSequence.contains("+") || backgroundSequence.contains("×") || backgroundSequence.contains("÷") || backgroundSequence.contains("%")) {
                     String testToSolve = backgroundSequence;
                     System.out.println("Sequence now solving (2): " + testToSolve);
 
 
-                    if (testToSolve.contains("x") || testToSolve.contains("/") || testToSolve.contains("%")) {
-                        if (testToSolve.contains("x")) {
+                    if (testToSolve.contains("×") || testToSolve.contains("÷") || testToSolve.contains("%")) {
+                        if (testToSolve.contains("×")) {
                             determineOps = determineOps + 2;
                         }
 
-                        if (testToSolve.contains("/")) {
+                        if (testToSolve.contains("÷")) {
                             determineOps = determineOps + 3;
                         }
 
@@ -292,47 +293,47 @@ public class MainActivity extends AppCompatActivity {
                         System.out.println("Current value of determine ops: " + determineOps);
                         switch (determineOps) {
                             case 2:
-                                toSolve(testToSolve,"x",false);
+                                toSolve(testToSolve,"×",false);
                                 break;
                             case 3:
-                                toSolve(testToSolve,"/",false);
+                                toSolve(testToSolve,"÷",false);
                                 break;
                             case 4:
                                 toSolve(testToSolve,"%",false);
                                 break;
                             case 5:
-                                if (testToSolve.indexOf("x") < testToSolve.indexOf("/")) {
-                                    toSolve(testToSolve,"x",false);
+                                if (testToSolve.indexOf("×") < testToSolve.indexOf("÷")) {
+                                    toSolve(testToSolve,"×",false);
                                 }
-                                if (testToSolve.indexOf("/") < testToSolve.indexOf("x")) {
-                                    toSolve(testToSolve,"/",false);
+                                if (testToSolve.indexOf("÷") < testToSolve.indexOf("×")) {
+                                    toSolve(testToSolve,"÷",false);
                                 }
                                 break;
                             case 6:
-                                if (testToSolve.indexOf("x") < testToSolve.indexOf("%")) {
-                                    toSolve(testToSolve,"x",false);
+                                if (testToSolve.indexOf("×") < testToSolve.indexOf("%")) {
+                                    toSolve(testToSolve,"×",false);
                                 }
-                                if (testToSolve.indexOf("%") < testToSolve.indexOf("x")) {
+                                if (testToSolve.indexOf("%") < testToSolve.indexOf("×")) {
                                     toSolve(testToSolve,"%",false);
                                 }
                                 break;
                             case 7:
-                                if (testToSolve.indexOf("/") < testToSolve.indexOf("%")) {
-                                    toSolve(testToSolve,"/",false);
+                                if (testToSolve.indexOf("÷") < testToSolve.indexOf("%")) {
+                                    toSolve(testToSolve,"÷",false);
                                 }
-                                if (testToSolve.indexOf("%") < testToSolve.indexOf("/")) {
+                                if (testToSolve.indexOf("%") < testToSolve.indexOf("÷")) {
                                     toSolve(testToSolve,"%",false);
                                 }
                                 break;
                             case 9:
-                                if (testToSolve.indexOf("x") < testToSolve.indexOf("%") && testToSolve.indexOf("x") < testToSolve.indexOf("/")) {
-                                    toSolve(testToSolve,"x",false);
+                                if (testToSolve.indexOf("×") < testToSolve.indexOf("%") && testToSolve.indexOf("×") < testToSolve.indexOf("÷")) {
+                                    toSolve(testToSolve,"×",false);
                                 }
-                                if (testToSolve.indexOf("%") < testToSolve.indexOf("x") && testToSolve.indexOf("%") < testToSolve.indexOf("/")) {
+                                if (testToSolve.indexOf("%") < testToSolve.indexOf("×") && testToSolve.indexOf("%") < testToSolve.indexOf("÷")) {
                                     toSolve(testToSolve,"%",false);
                                 }
-                                if (testToSolve.indexOf("/") < testToSolve.indexOf("x") && testToSolve.indexOf("/") < testToSolve.indexOf("%")) {
-                                    toSolve(testToSolve,"/",false);
+                                if (testToSolve.indexOf("÷") < testToSolve.indexOf("×") && testToSolve.indexOf("÷") < testToSolve.indexOf("%")) {
+                                    toSolve(testToSolve,"÷",false);
                                 }
                                 break;
                         }
@@ -387,15 +388,17 @@ public class MainActivity extends AppCompatActivity {
         if (!hasOpeningParenthesis) {
             if (txtViewSmall.getText().toString().endsWith("+")
                     || txtViewSmall.getText().toString().endsWith("-")
-                    || txtViewSmall.getText().toString().endsWith("x")
-                    || txtViewSmall.getText().toString().endsWith("/")
+                    || txtViewSmall.getText().toString().endsWith("×")
+                    || txtViewSmall.getText().toString().endsWith("÷")
                     || txtViewSmall.getText().toString().endsWith("(")
                     || txtViewSmall.getText().toString().isEmpty()) {
-                txtViewSmall.setText(txtViewSmall.getText()+"(");
+                String getTextOParenth = txtViewSmall.getText()+"(";
+                txtViewSmall.setText(getTextOParenth);
                 backgroundSequence = backgroundSequence.trim() + "(";
             }
             else {
-                txtViewSmall.setText(txtViewSmall.getText()+"x(");
+                String getTextOParenth = txtViewSmall.getText()+"x(";
+                txtViewSmall.setText(getTextOParenth);
                 backgroundSequence = backgroundSequence.trim() + "x(";
             }
             OPCount++;
@@ -404,17 +407,19 @@ public class MainActivity extends AppCompatActivity {
         else {
             if (txtViewSmall.getText().toString().endsWith("+")
                     || txtViewSmall.getText().toString().endsWith("-")
-                    || txtViewSmall.getText().toString().endsWith("x")
-                    || txtViewSmall.getText().toString().endsWith("/")
+                    || txtViewSmall.getText().toString().endsWith("×")
+                    || txtViewSmall.getText().toString().endsWith("÷")
                     || txtViewSmall.getText().toString().endsWith("(")
                     || txtViewSmall.getText().toString().isEmpty()) {
-                txtViewSmall.setText(txtViewSmall.getText()+"(");
+                String getTextOParenth = txtViewSmall.getText()+"(";
+                txtViewSmall.setText(getTextOParenth);
                 backgroundSequence = backgroundSequence.trim() + "(";
                 OPCount++;
                 hasOpeningParenthesis = true;
             }
             else {
-                txtViewSmall.setText(txtViewSmall.getText()+")");
+                String getTextCParenth = txtViewSmall.getText()+")";
+                txtViewSmall.setText(getTextCParenth);
                 backgroundSequence = backgroundSequence.trim() + ")";
                 CPCount++;
                 if (txtViewSmall.getText().toString().endsWith(")")) {
@@ -435,11 +440,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void toInputChar(String s) {
         if (txtViewSmall.getText().toString().endsWith(")")) {
-            txtViewSmall.setText(txtViewSmall.getText() + "x" + s);
-            backgroundSequence = backgroundSequence.trim() + "x" + s;
+            String getTextChar = txtViewSmall.getText() + "×" + s;
+            txtViewSmall.setText(getTextChar);
+            backgroundSequence = backgroundSequence.trim() + "×" + s;
         }
         else {
-            txtViewSmall.setText(txtViewSmall.getText() + s);
+            String getTextChar = txtViewSmall.getText() + s;
+            txtViewSmall.setText(getTextChar);
             backgroundSequence = backgroundSequence.trim() + s;
         }
 
@@ -454,7 +461,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("Last index of " + op + ": " + operandIndex);
 
         //check operation/s at left of current operation
-        if (testToSolve.contains("+") || testToSolve.contains("x") || testToSolve.contains("/") || testToSolve.contains("%")) {
+        if (testToSolve.contains("+") || testToSolve.contains("×") || testToSolve.contains("÷") || testToSolve.contains("%")) {
             for (int i=0;i<operandIndex;i++) {
                 if (testToSolve.charAt(i) == '+' || testToSolve.charAt(i) == 'x' || testToSolve.charAt(i) == '/' || testToSolve.charAt(i) == '%') {
                     lastIndex = i;
@@ -465,7 +472,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("Index of possible op before current opIndex: " + beforeOperandIndex);
 
         //check operation/s at right of current operation
-        if (testToSolve.contains("+") || testToSolve.contains("x") || testToSolve.contains("/") || testToSolve.contains("%")) {
+        if (testToSolve.contains("+") || testToSolve.contains("×") || testToSolve.contains("÷") || testToSolve.contains("%")) {
             for (int i=testToSolve.length()-1;i>operandIndex;i--) {
                 if (testToSolve.charAt(i) == '+' || testToSolve.charAt(i) == 'x' || testToSolve.charAt(i) == '/') {
                     nextIndex = i;
@@ -492,10 +499,10 @@ public class MainActivity extends AppCompatActivity {
                         case "+":
                             isSolved = String.valueOf(a+b);
                             break;
-                        case "x":
+                        case "×":
                             isSolved = String.valueOf(a*b);
                             break;
-                        case "/":
+                        case "÷":
                             isSolved = String.valueOf(a/b);
                             break;
                         case "%":
@@ -506,7 +513,7 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("This is the new equation (with groupings): " + newEquation + "()" + newEquation2);
                     System.out.println("This is the new equation plus solved: " + newEquation + isSolved + newEquation2);
                     String currentSolved = newEquation + isSolved + newEquation2;
-                    if (currentSolved.contains("+") || currentSolved.contains("x") || currentSolved.contains("/") || currentSolved.contains("%")) {
+                    if (currentSolved.contains("+") || currentSolved.contains("×") || currentSolved.contains("÷") || currentSolved.contains("%")) {
                         backgroundSequence = backgroundSequence.replace(backgroundSequence.substring(indexInnermostOParenthesis+1,indexInnermostCParenthesis),currentSolved);
                         System.out.println("Current equation: " + backgroundSequence);
                     }
@@ -523,10 +530,10 @@ public class MainActivity extends AppCompatActivity {
                         case "+":
                             isSolved = String.valueOf(a+b);
                             break;
-                        case "x":
+                        case "×":
                             isSolved = String.valueOf(a*b);
                             break;
-                        case "/":
+                        case "÷":
                             isSolved = String.valueOf(a/b);
                             break;
                         case "%":
@@ -536,7 +543,7 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("This is the new equation: " + newEquation);
                     System.out.println("This is the new equation plus solved: " + newEquation + isSolved);
                     String currentSolved = newEquation + isSolved;
-                    if (currentSolved.contains("+") || currentSolved.contains("x") || currentSolved.contains("/") || currentSolved.contains("%")) {
+                    if (currentSolved.contains("+") || currentSolved.contains("×") || currentSolved.contains("÷") || currentSolved.contains("%")) {
                         backgroundSequence = backgroundSequence.replace(backgroundSequence.substring(indexInnermostOParenthesis+1,indexInnermostCParenthesis),currentSolved);
                         System.out.println("Current equation: " + backgroundSequence);
                     }
@@ -558,10 +565,10 @@ public class MainActivity extends AppCompatActivity {
                         case "+":
                             isSolved = String.valueOf(a+b);
                             break;
-                        case "x":
+                        case "×":
                             isSolved = String.valueOf(a*b);
                             break;
-                        case "/":
+                        case "÷":
                             isSolved = String.valueOf(a/b);
                             break;
                         case "%":
@@ -572,7 +579,7 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("This is the new equation (no groupings): " + "()" + newEquation2);
                     System.out.println("This is the new equation plus solved: " + isSolved + newEquation2);
                     String currentSolved = isSolved + newEquation2;
-                    if (currentSolved.contains("+") || currentSolved.contains("x") || currentSolved.contains("/") || currentSolved.contains("%")) {
+                    if (currentSolved.contains("+") || currentSolved.contains("×") || currentSolved.contains("÷") || currentSolved.contains("%")) {
                         backgroundSequence = backgroundSequence.replace(backgroundSequence.substring(indexInnermostOParenthesis+1,indexInnermostCParenthesis),currentSolved);
                         System.out.println("Current equation: " + backgroundSequence);
                     }
@@ -589,10 +596,10 @@ public class MainActivity extends AppCompatActivity {
                         case "+":
                             isSolved = String.valueOf(a+b);
                             break;
-                        case "x":
+                        case "×":
                             isSolved = String.valueOf(a*b);
                             break;
-                        case "/":
+                        case "÷":
                             isSolved = String.valueOf(a/b);
                             break;
                         case "%":
@@ -601,7 +608,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     System.out.println("This is the new equation plus solved: " + isSolved);
                     String currentSolved = isSolved;
-                    if (currentSolved.contains("+") || currentSolved.contains("x") || currentSolved.contains("/") || currentSolved.contains("%")) {
+                    if (currentSolved.contains("+") || currentSolved.contains("×") || currentSolved.contains("÷") || currentSolved.contains("%")) {
                         backgroundSequence = backgroundSequence.replace(backgroundSequence.substring(indexInnermostOParenthesis+1,indexInnermostCParenthesis),currentSolved);
                         System.out.println("Current equation: " + backgroundSequence);
                     }
@@ -631,10 +638,10 @@ public class MainActivity extends AppCompatActivity {
                         case "+":
                             isSolved = String.valueOf(a+b);
                             break;
-                        case "x":
+                        case "×":
                             isSolved = String.valueOf(a*b);
                             break;
-                        case "/":
+                        case "÷":
                             isSolved = String.valueOf(a/b);
                             break;
                         case "%":
@@ -653,10 +660,10 @@ public class MainActivity extends AppCompatActivity {
                         case "+":
                             isSolved = String.valueOf(a+b);
                             break;
-                        case "x":
+                        case "×":
                             isSolved = String.valueOf(a*b);
                             break;
-                        case "/":
+                        case "÷":
                             isSolved = String.valueOf(a/b);
                             break;
                         case "%":
@@ -680,10 +687,10 @@ public class MainActivity extends AppCompatActivity {
                         case "+":
                             isSolved = String.valueOf(a+b);
                             break;
-                        case "x":
+                        case "×":
                             isSolved = String.valueOf(a*b);
                             break;
-                        case "/":
+                        case "÷":
                             isSolved = String.valueOf(a/b);
                             break;
                         case "%":
@@ -702,10 +709,10 @@ public class MainActivity extends AppCompatActivity {
                         case "+":
                             isSolved = String.valueOf(a+b);
                             break;
-                        case "x":
+                        case "×":
                             isSolved = String.valueOf(a*b);
                             break;
-                        case "/":
+                        case "÷":
                             isSolved = String.valueOf(a/b);
                             break;
                         case "%":
@@ -721,7 +728,7 @@ public class MainActivity extends AppCompatActivity {
         lastIndex = -1;
         nextIndex = -1;
 
-        if (!backgroundSequence.contains("+") && !backgroundSequence.contains("x") && !backgroundSequence.contains("/") && !backgroundSequence.contains("%")) {
+        if (!backgroundSequence.contains("+") && !backgroundSequence.contains("×") && !backgroundSequence.contains("÷") && !backgroundSequence.contains("%")) {
             if (backgroundSequence.contains(".")) {
                 int dotCheck = backgroundSequence.indexOf(".");
                 String decimalValue = backgroundSequence.substring(dotCheck+1);
