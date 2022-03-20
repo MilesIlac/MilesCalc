@@ -1,28 +1,30 @@
-package com.milesilac.testcalc;
+package com.milesilac.milescalc;
 
 
 import androidx.appcompat.app.AppCompatActivity;
 
-
 import android.os.Bundle;
-import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     private TextView txtViewSmall,txtViewBig;
-    boolean hasOpeningParenthesis = false;
-    int OPCount = 0;
-    int CPCount = 0;
-    String backgroundSequence = " ";
-    int endCharIndex;
-    int lastIndex = -1;
-    int nextIndex = -1;
-    int indexInnermostOParenthesis;
-    int indexInnermostCParenthesis;
-    String isSolved;
-    int determineOps = 0;
+    private boolean hasOpeningParenthesis = false;
+    private int OPCount = 0;
+    private int CPCount = 0;
+    private String backgroundSequence = " ";
+    private int lastIndex = -1;
+    private int nextIndex = -1;
+    private int indexInnermostOParenthesis;
+    private int indexInnermostCParenthesis;
+    private String isSolved;
+    private int determineOps = 0;
+    private int determineCurrentSolved = 0;
+
+    private final Button[] buttons = new Button[20];
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,84 +34,80 @@ public class MainActivity extends AppCompatActivity {
         txtViewSmall = findViewById(R.id.txtViewSmall);
         txtViewBig = findViewById(R.id.txtViewBig);
 
+        buttons[0] = findViewById(R.id.btn0);
+        buttons[1] = findViewById(R.id.btn1);
+        buttons[2] = findViewById(R.id.btn2);
+        buttons[3] = findViewById(R.id.btn3);
+        buttons[4] = findViewById(R.id.btn4);
+        buttons[5] = findViewById(R.id.btn5);
+        buttons[6] = findViewById(R.id.btn6);
+        buttons[7] = findViewById(R.id.btn7);
+        buttons[8] = findViewById(R.id.btn8);
+        buttons[9] = findViewById(R.id.btn9);
+        buttons[10] = findViewById(R.id.btnAdd);
+        buttons[11] = findViewById(R.id.btnSubt);
+        buttons[12] = findViewById(R.id.btnMult);
+        buttons[13] = findViewById(R.id.btnDiv);
+        buttons[14] = findViewById(R.id.btnPercent);
+        buttons[15] = findViewById(R.id.btnDot);
+        buttons[16] = findViewById(R.id.btnParenthesis);
+        buttons[17] = findViewById(R.id.btnEquals);
+        buttons[18] = findViewById(R.id.btnC);
+        buttons[19] = findViewById(R.id.btnQuit);
+
+        for (int i=0;i<10;i++) {
+            int currentNum = i;
+            buttons[i].setOnClickListener(v -> toInputChar(String.valueOf(currentNum)));
+        }
+
+        for (int i=10;i<20;i++) {
+            int currentOp = i;
+            buttons[i].setOnClickListener(v -> {
+                switch (currentOp) {
+                    case 10:
+                        getTextOp("+");
+                        break;
+                    case 11:
+                        getTextOp("-");
+                        break;
+                    case 12:
+                        getTextOp("×");
+                        break;
+                    case 13:
+                        getTextOp("÷");
+                        break;
+                    case 14:
+                        getTextOp("%");
+                        break;
+                    case 15:
+                        getTextOp(".");
+                        break;
+                    case 16:
+                        toCheckParenthesis();
+                        break;
+                    case 17:
+                        toCalc();
+                        break;
+                    case 18:
+                        toClear();
+                        break;
+                    case 19:
+                        finish();
+                        break;
+                }
+            }); //onClickListener
+        }
+
     }
 
-
-    public void onClick (View v) {
-        switch (v.getId()) {
-            case R.id.btn0:
-                toInputChar("0");
-                break;
-            case R.id.btn1:
-                toInputChar("1");
-                break;
-            case R.id.btn2:
-                toInputChar("2");
-                break;
-            case R.id.btn3:
-                toInputChar("3");
-                break;
-            case R.id.btn4:
-                toInputChar("4");
-                break;
-            case R.id.btn5:
-                toInputChar("5");
-                break;
-            case R.id.btn6:
-                toInputChar("6");
-                break;
-            case R.id.btn7:
-                toInputChar("7");
-                break;
-            case R.id.btn8:
-                toInputChar("8");
-                break;
-            case R.id.btn9:
-                toInputChar("9");
-                break;
-            case R.id.btnAdd:
-                String getTextPlus = txtViewSmall.getText()+"+";
-                txtViewSmall.setText(getTextPlus);
-                backgroundSequence = backgroundSequence.trim() + "+";
-                break;
-            case R.id.btnSubt:
-                String getTextMinus = txtViewSmall.getText()+"-";
-                txtViewSmall.setText(getTextMinus);
-                backgroundSequence = backgroundSequence.trim() + "+-";
-                break;
-            case R.id.btnMult:
-                String getTextMult = txtViewSmall.getText()+"×";
-                txtViewSmall.setText(getTextMult);
-                backgroundSequence = backgroundSequence.trim() + "×";
-                break;
-            case R.id.btnDiv:
-                String getTextDiv = txtViewSmall.getText()+"÷";
-                txtViewSmall.setText(getTextDiv);
-                backgroundSequence = backgroundSequence.trim() + "÷";
-                break;
-            case R.id.btnPercent:
-                String getTextMod = txtViewSmall.getText()+"%";
-                txtViewSmall.setText(getTextMod);
-                backgroundSequence = backgroundSequence.trim() + "%";
-                break;
-            case R.id.btnDot:
-                String getTextDot = txtViewSmall.getText()+".";
-                txtViewSmall.setText(getTextDot);
-                backgroundSequence = backgroundSequence.trim() + ".";
-                break;
-            case R.id.btnParenthesis:
-                toCheckParenthesis();
-                break;
-            case R.id.btnEquals:
-                toCalc();
-                break;
-            case R.id.btnC:
-                toClear();
-                break;
-            case R.id.btnQuit:
-                finish();
-                break;
-
+    public void getTextOp(String op) {
+        String getTextWithOp = txtViewSmall.getText() + op;
+        txtViewSmall.setText(getTextWithOp);
+        if (op.equals("-")) {
+            backgroundSequence = backgroundSequence.trim() + "+-";
+        }
+        else {
+            backgroundSequence = backgroundSequence.trim() + op;
         }
 
     }
@@ -356,7 +354,7 @@ public class MainActivity extends AppCompatActivity {
     public void toClear() {
         String testString = txtViewSmall.getText().toString();
         if (!testString.trim().equals("")) {
-           endCharIndex = txtViewSmall.getText().toString().length() - 1;
+           int endCharIndex = txtViewSmall.getText().toString().length() - 1;
            String tempString = txtViewSmall.getText().toString().substring(0, endCharIndex);
            if (txtViewSmall.getText().toString().charAt(endCharIndex) == '(') {
                OPCount--;
@@ -423,12 +421,7 @@ public class MainActivity extends AppCompatActivity {
                 backgroundSequence = backgroundSequence.trim() + ")";
                 CPCount++;
                 if (txtViewSmall.getText().toString().endsWith(")")) {
-                    if (OPCount == CPCount) {
-                        hasOpeningParenthesis = false;
-                    }
-                    else {
-                        hasOpeningParenthesis = true;
-                    }
+                    hasOpeningParenthesis = OPCount != CPCount;
                 }
                 else {
                     hasOpeningParenthesis = false;
@@ -454,277 +447,32 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void toSolve(String testToSolve, String op, boolean hasParenthesis) {
-
         //-- get indexes
         //get current operation
         int operandIndex = testToSolve.indexOf(op);
         System.out.println("Last index of " + op + ": " + operandIndex);
 
-        //check operation/s at left of current operation
+        //check operation/s at left and right of current operation
         if (testToSolve.contains("+") || testToSolve.contains("×") || testToSolve.contains("÷") || testToSolve.contains("%")) {
             for (int i=0;i<operandIndex;i++) {
                 if (testToSolve.charAt(i) == '+' || testToSolve.charAt(i) == 'x' || testToSolve.charAt(i) == '/' || testToSolve.charAt(i) == '%') {
                     lastIndex = i;
                 }
             }
-        }
-        int beforeOperandIndex = lastIndex;
-        System.out.println("Index of possible op before current opIndex: " + beforeOperandIndex);
-
-        //check operation/s at right of current operation
-        if (testToSolve.contains("+") || testToSolve.contains("×") || testToSolve.contains("÷") || testToSolve.contains("%")) {
             for (int i=testToSolve.length()-1;i>operandIndex;i--) {
-                if (testToSolve.charAt(i) == '+' || testToSolve.charAt(i) == 'x' || testToSolve.charAt(i) == '/') {
+                if (testToSolve.charAt(i) == '+' || testToSolve.charAt(i) == 'x' || testToSolve.charAt(i) == '÷' || testToSolve.charAt(i) == '%') {
                     nextIndex = i;
                 }
             }
         }
+        int beforeOperandIndex = lastIndex;
+        System.out.println("Index of possible op before current opIndex: " + beforeOperandIndex);
         int afterOperandIndex = nextIndex;
         System.out.println("Index of possible op before after opIndex: " + afterOperandIndex);
         //--
 
-        if (hasParenthesis) {
-            System.out.println("Solving under parenthesis");
-            //solving w/ respect to the indexes
-            if (beforeOperandIndex != -1) { //if left operand exists
-                System.out.println("Solving under parenthesis, left operand exists");
-                float a = Float.parseFloat(testToSolve.substring(beforeOperandIndex+1,operandIndex));
-                float b;
-                String newEquation = testToSolve.substring(0,beforeOperandIndex+1).trim();
-                String newEquation2;
-                if (afterOperandIndex != -1) { //if right operand exists
-                    System.out.println("Solving under parenthesis, left operand exists, right operand exists");
-                    b = Float.parseFloat(testToSolve.substring(operandIndex+1,afterOperandIndex));
-                    switch (op) {
-                        case "+":
-                            isSolved = String.valueOf(a+b);
-                            break;
-                        case "×":
-                            isSolved = String.valueOf(a*b);
-                            break;
-                        case "÷":
-                            isSolved = String.valueOf(a/b);
-                            break;
-                        case "%":
-                            isSolved = String.valueOf(a%b);
-                            break;
-                    }
-                    newEquation2 = testToSolve.substring(afterOperandIndex).trim();
-                    System.out.println("This is the new equation (with groupings): " + newEquation + "()" + newEquation2);
-                    System.out.println("This is the new equation plus solved: " + newEquation + isSolved + newEquation2);
-                    String currentSolved = newEquation + isSolved + newEquation2;
-                    if (currentSolved.contains("+") || currentSolved.contains("×") || currentSolved.contains("÷") || currentSolved.contains("%")) {
-                        backgroundSequence = backgroundSequence.replace(backgroundSequence.substring(indexInnermostOParenthesis+1,indexInnermostCParenthesis),currentSolved);
-                        System.out.println("Current equation: " + backgroundSequence);
-                    }
-                    else {
-                        backgroundSequence = backgroundSequence.replace(backgroundSequence.substring(indexInnermostOParenthesis,indexInnermostCParenthesis+1),currentSolved);
-                        System.out.println("Current equation: " + backgroundSequence);
-                    }
+        toSolveHelperMethod(testToSolve,op, hasParenthesis,operandIndex,beforeOperandIndex,afterOperandIndex);
 
-                }
-                else { //if right operand does not exist
-                    System.out.println("Solving under parenthesis, left operand exists, right operand does not exist");
-                    b = Float.parseFloat(testToSolve.substring(operandIndex+1));
-                    switch (op) {
-                        case "+":
-                            isSolved = String.valueOf(a+b);
-                            break;
-                        case "×":
-                            isSolved = String.valueOf(a*b);
-                            break;
-                        case "÷":
-                            isSolved = String.valueOf(a/b);
-                            break;
-                        case "%":
-                            isSolved = String.valueOf(a%b);
-                            break;
-                    }
-                    System.out.println("This is the new equation: " + newEquation);
-                    System.out.println("This is the new equation plus solved: " + newEquation + isSolved);
-                    String currentSolved = newEquation + isSolved;
-                    if (currentSolved.contains("+") || currentSolved.contains("×") || currentSolved.contains("÷") || currentSolved.contains("%")) {
-                        backgroundSequence = backgroundSequence.replace(backgroundSequence.substring(indexInnermostOParenthesis+1,indexInnermostCParenthesis),currentSolved);
-                        System.out.println("Current equation: " + backgroundSequence);
-                    }
-                    else {
-                        backgroundSequence = backgroundSequence.replace(backgroundSequence.substring(indexInnermostOParenthesis,indexInnermostCParenthesis+1),currentSolved);
-                        System.out.println("Current equation: " + backgroundSequence);
-                    }
-                }
-            }
-            else { //if left operand does not exist
-                System.out.println("Solving under parenthesis, left operand does not exist");
-                float a = Float.parseFloat(testToSolve.substring(0,operandIndex));
-                float b;
-                String newEquation2;
-                if (afterOperandIndex != -1) { //if right operand exists
-                    System.out.println("Solving under parenthesis, left operand does not exist, right operand exists");
-                    b = Float.parseFloat(testToSolve.substring(operandIndex+1,afterOperandIndex));
-                    switch (op) {
-                        case "+":
-                            isSolved = String.valueOf(a+b);
-                            break;
-                        case "×":
-                            isSolved = String.valueOf(a*b);
-                            break;
-                        case "÷":
-                            isSolved = String.valueOf(a/b);
-                            break;
-                        case "%":
-                            isSolved = String.valueOf(a%b);
-                            break;
-                    }
-                    newEquation2 = testToSolve.substring(afterOperandIndex).trim();
-                    System.out.println("This is the new equation (no groupings): " + "()" + newEquation2);
-                    System.out.println("This is the new equation plus solved: " + isSolved + newEquation2);
-                    String currentSolved = isSolved + newEquation2;
-                    if (currentSolved.contains("+") || currentSolved.contains("×") || currentSolved.contains("÷") || currentSolved.contains("%")) {
-                        backgroundSequence = backgroundSequence.replace(backgroundSequence.substring(indexInnermostOParenthesis+1,indexInnermostCParenthesis),currentSolved);
-                        System.out.println("Current equation: " + backgroundSequence);
-                    }
-                    else {
-                        backgroundSequence = backgroundSequence.replace(backgroundSequence.substring(indexInnermostOParenthesis,indexInnermostCParenthesis+1),currentSolved);
-                        System.out.println("Current equation: " + backgroundSequence);
-                    }
-
-                }
-                else { //if right operand does not exist
-                    System.out.println("Solving under parenthesis, left operand does not exist, right operand does not exist");
-                    b = Float.parseFloat(testToSolve.substring(operandIndex+1));
-                    switch (op) {
-                        case "+":
-                            isSolved = String.valueOf(a+b);
-                            break;
-                        case "×":
-                            isSolved = String.valueOf(a*b);
-                            break;
-                        case "÷":
-                            isSolved = String.valueOf(a/b);
-                            break;
-                        case "%":
-                            isSolved = String.valueOf(a%b);
-                            break;
-                    }
-                    System.out.println("This is the new equation plus solved: " + isSolved);
-                    String currentSolved = isSolved;
-                    if (currentSolved.contains("+") || currentSolved.contains("×") || currentSolved.contains("÷") || currentSolved.contains("%")) {
-                        backgroundSequence = backgroundSequence.replace(backgroundSequence.substring(indexInnermostOParenthesis+1,indexInnermostCParenthesis),currentSolved);
-                        System.out.println("Current equation: " + backgroundSequence);
-                    }
-                    else {
-                        backgroundSequence = backgroundSequence.replace(backgroundSequence.substring(indexInnermostOParenthesis,indexInnermostCParenthesis+1),currentSolved);
-                        System.out.println("Current equation: " + backgroundSequence);
-                    }
-                }
-            }
-
-        }
-
-
-        else {
-            System.out.println("Solving NOT under parenthesis");
-            //solving w/ respect to the indexes
-            if (beforeOperandIndex != -1) { //if left operand exists
-                System.out.println("Solving NOT under parenthesis, left operand exists");
-                float a = Float.parseFloat(testToSolve.substring(beforeOperandIndex+1,operandIndex));
-                float b;
-                String newEquation = backgroundSequence.substring(0,beforeOperandIndex+1).trim();
-                String newEquation2;
-                if (afterOperandIndex != -1) { //if right operand exists
-                    System.out.println("Solving NOT under parenthesis, left operand exists, right operand exists");
-                    b = Float.parseFloat(testToSolve.substring(operandIndex+1,afterOperandIndex));
-                    switch (op) {
-                        case "+":
-                            isSolved = String.valueOf(a+b);
-                            break;
-                        case "×":
-                            isSolved = String.valueOf(a*b);
-                            break;
-                        case "÷":
-                            isSolved = String.valueOf(a/b);
-                            break;
-                        case "%":
-                            isSolved = String.valueOf(a%b);
-                            break;
-                    }
-                    newEquation2 = backgroundSequence.substring(afterOperandIndex).trim();
-                    System.out.println("This is the new equation (no groupings): " + newEquation + "()" + newEquation2);
-                    System.out.println("This is the new equation plus solved: " + newEquation + isSolved + newEquation2);
-                    backgroundSequence = newEquation + isSolved + newEquation2;
-                }
-                else { //if right operand does not exist
-                    System.out.println("Solving NOT under parenthesis, left operand exists, right operand does not exist");
-                    b = Float.parseFloat(testToSolve.substring(operandIndex+1));
-                    switch (op) {
-                        case "+":
-                            isSolved = String.valueOf(a+b);
-                            break;
-                        case "×":
-                            isSolved = String.valueOf(a*b);
-                            break;
-                        case "÷":
-                            isSolved = String.valueOf(a/b);
-                            break;
-                        case "%":
-                            isSolved = String.valueOf(a%b);
-                            break;
-                    }
-                    System.out.println("This is the new equation (no groupings): " + newEquation);
-                    System.out.println("This is the new equation plus solved: " + newEquation + isSolved);
-                    backgroundSequence = newEquation + isSolved;
-                }
-            }
-            else { //if left operand does not exist
-                System.out.println("Solving NOT under parenthesis, left operand does not exist");
-                float a = Float.parseFloat(testToSolve.substring(0,operandIndex));
-                float b;
-                String newEquation2;
-                if (afterOperandIndex != -1) { //if right operand exists
-                    System.out.println("Solving NOT under parenthesis, left operand does not exist, right operand exists");
-                    b = Float.parseFloat(testToSolve.substring(operandIndex+1,afterOperandIndex));
-                    switch (op) {
-                        case "+":
-                            isSolved = String.valueOf(a+b);
-                            break;
-                        case "×":
-                            isSolved = String.valueOf(a*b);
-                            break;
-                        case "÷":
-                            isSolved = String.valueOf(a/b);
-                            break;
-                        case "%":
-                            isSolved = String.valueOf(a%b);
-                            break;
-                    }
-                    newEquation2 = backgroundSequence.substring(afterOperandIndex).trim();
-                    System.out.println("This is the new equation (no groupings): " + "()" + newEquation2);
-                    System.out.println("This is the new equation plus solved: " + isSolved + newEquation2);
-                    backgroundSequence = isSolved + newEquation2;
-                }
-                else { //if right operand does not exist
-                    System.out.println("Solving NOT under parenthesis, left operand does not exist, right operand does not exist");
-                    b = Float.parseFloat(testToSolve.substring(operandIndex+1));
-                    switch (op) {
-                        case "+":
-                            isSolved = String.valueOf(a+b);
-                            break;
-                        case "×":
-                            isSolved = String.valueOf(a*b);
-                            break;
-                        case "÷":
-                            isSolved = String.valueOf(a/b);
-                            break;
-                        case "%":
-                            isSolved = String.valueOf(a%b);
-                            break;
-                    }
-                    System.out.println("This is the new equation plus solved: " + isSolved);
-                    backgroundSequence = isSolved;
-                }
-            }
-
-        }
         lastIndex = -1;
         nextIndex = -1;
 
@@ -739,8 +487,77 @@ public class MainActivity extends AppCompatActivity {
         }
         txtViewBig.setText(backgroundSequence);
         System.out.println(txtViewBig.getText());
+    } //toSolve
 
-    }
+    public void toSolveHelperMethod(String testToSolve, String op,
+                                    boolean hasParenthesis, int operandIndex, int beforeOperandIndex, int afterOperandIndex) {
+        System.out.println("Solving under parenthesis");
+        //solving w/ respect to the indexes
 
+        System.out.println("Solving under parenthesis, left operand exists");
+        float a;
+        float b;
+        String newEquation = null;
+        String newEquation2 = null;
+        if (beforeOperandIndex != -1) { //if left operand exists
+            a = Float.parseFloat(testToSolve.substring(beforeOperandIndex+1,operandIndex));
+            newEquation = testToSolve.substring(0,beforeOperandIndex+1).trim();
+            determineCurrentSolved += 1;
+        }
+        else {
+            a = Float.parseFloat(testToSolve.substring(0,operandIndex));
+        }
+        if (afterOperandIndex != -1) { //if right operand exists
+            b = Float.parseFloat(testToSolve.substring(operandIndex+1,afterOperandIndex));
+            newEquation2 = testToSolve.substring(afterOperandIndex).trim();
+            determineCurrentSolved += 2;
+        }
+        else {
+            b = Float.parseFloat(testToSolve.substring(operandIndex+1));
+        }
+        switch (op) {
+            case "+":
+                isSolved = String.valueOf(a+b);
+                break;
+            case "×":
+                isSolved = String.valueOf(a*b);
+                break;
+            case "÷":
+                isSolved = String.valueOf(a/b);
+                break;
+            case "%":
+                isSolved = String.valueOf(a%b);
+                break;
+        }
+        String currentSolved = null;
+        switch (determineCurrentSolved) {
+            case 0:
+                currentSolved = isSolved;
+                break;
+            case 1:
+                currentSolved = newEquation + isSolved;
+                break;
+            case 2:
+                currentSolved = isSolved + newEquation2;
+                break;
+            case 3:
+                currentSolved = newEquation + isSolved + newEquation2;
+                break;
+        }
+        if (hasParenthesis) {
+            assert currentSolved != null;
+            if (currentSolved.contains("+") || currentSolved.contains("×") || currentSolved.contains("÷") || currentSolved.contains("%")) {
+                backgroundSequence = backgroundSequence.replace(backgroundSequence.substring(indexInnermostOParenthesis+1,indexInnermostCParenthesis),currentSolved);
+            }
+            else {
+                backgroundSequence = backgroundSequence.replace(backgroundSequence.substring(indexInnermostOParenthesis,indexInnermostCParenthesis+1),currentSolved);
+            }
+        }
+        else {
+            backgroundSequence = currentSolved;
+        }
+        determineCurrentSolved = 0;
 
+        System.out.println("Current equation: " + backgroundSequence);
+    } //toSolveHelperMethod
 }

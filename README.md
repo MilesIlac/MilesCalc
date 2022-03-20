@@ -1,4 +1,4 @@
-# TestCalc
+# MilesCalc
 Calculator app made in Java
 
 ## General Info

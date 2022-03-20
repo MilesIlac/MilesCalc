@@ -1,4 +1,4 @@
-package com.milesilac.testcalc;
+package com.milesilac.milescalc;
 
 import org.junit.Test;
 
