@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TestCalc</string>
+    <string name="app_name">MilesCalc</string>
     <!-- Zero string -->
     <string name="zero">0</string>
     <!-- Other input button strings -->
