@@ -98,7 +98,28 @@ public class MainActivity extends AppCompatActivity {
             }); //onClickListener
         }
 
+        buttons[18].setOnLongClickListener(v -> {
+            while (!txtViewBig.getText().toString().equals("0") && !txtViewSmall.getText().toString().equals("0")) {
+                toClear();
+            }
+            return true;
+        });
+
     }
+
+    public void toInputChar(String s) {
+        if (txtViewSmall.getText().toString().endsWith(")")) {
+            String getTextChar = txtViewSmall.getText() + "×" + s;
+            txtViewSmall.setText(getTextChar);
+            backgroundSequence = backgroundSequence.trim() + "×" + s;
+        }
+        else {
+            String getTextChar = txtViewSmall.getText() + s;
+            txtViewSmall.setText(getTextChar);
+            backgroundSequence = backgroundSequence.trim() + s;
+        }
+        System.out.println("current backgroundsequence: " + backgroundSequence);
+    } //toInputChar
 
     public void getTextOp(String op) {
         String getTextWithOp = txtViewSmall.getText() + op;
@@ -109,8 +130,8 @@ public class MainActivity extends AppCompatActivity {
         else {
             backgroundSequence = backgroundSequence.trim() + op;
         }
-
-    }
+        System.out.println("current backgroundsequence: " + backgroundSequence);
+    } //getTextOp
 
 
     public void toCalc() {
@@ -348,6 +369,14 @@ public class MainActivity extends AppCompatActivity {
         else {
             Toast.makeText(this,"Grouping Error; please check amount of parentheses",Toast.LENGTH_LONG).show();
         }
+        backgroundSequence = txtViewSmall.getText().toString();
+        if (txtViewSmall.getText().toString().contains("-")) {
+            for (int i=0;i<txtViewSmall.getText().toString().length()-1;i++) {
+                if (txtViewSmall.getText().toString().charAt(i) == '-') {
+                    backgroundSequence = txtViewSmall.getText().toString().replace(txtViewSmall.getText().toString().substring(i,i+1),"+-");
+                }
+            }
+        }
 
     }
 
@@ -355,26 +384,27 @@ public class MainActivity extends AppCompatActivity {
         String testString = txtViewSmall.getText().toString();
         if (!testString.trim().equals("")) {
            int endCharIndex = txtViewSmall.getText().toString().length() - 1;
-           String tempString = txtViewSmall.getText().toString().substring(0, endCharIndex);
+           int backgroundEndCharIndex = backgroundSequence.length() - 1;
            if (txtViewSmall.getText().toString().charAt(endCharIndex) == '(') {
                OPCount--;
            }
            if (txtViewSmall.getText().toString().charAt(endCharIndex) == ')') {
                CPCount--;
            }
-           txtViewSmall.setText(tempString);
-           if (tempString.contains("-")) {
-               for (int i=0;i<tempString.length()-1;i++) {
-                   if (tempString.charAt(i) == '-') {
-                       backgroundSequence = tempString.replace(tempString.substring(i,i+1),"+-");
-                   }
-               }
+           String tempString = txtViewSmall.getText().toString().substring(0, endCharIndex);
+           String backgroundTempString;
+           if (backgroundSequence.endsWith("-")) {
+               backgroundTempString = backgroundSequence.substring(0,backgroundEndCharIndex-1);
            }
            else {
-               backgroundSequence = tempString;
+               backgroundTempString = backgroundSequence.substring(0,backgroundEndCharIndex);
            }
+           backgroundSequence = backgroundTempString;
+           txtViewSmall.setText(tempString);
+
 
            Toast.makeText(this, "clear in process", Toast.LENGTH_SHORT).show();
+           System.out.println("current backgroundsequence: " + backgroundSequence);
            System.out.println("This is the old String:" + tempString);
         }
         else {
@@ -382,14 +412,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     public void toCheckParenthesis() {
+        boolean endsWithOpCondition = txtViewSmall.getText().toString().endsWith("+") || txtViewSmall.getText().toString().endsWith("-")
+                || txtViewSmall.getText().toString().endsWith("×") || txtViewSmall.getText().toString().endsWith("÷")
+                || txtViewSmall.getText().toString().endsWith("(") || txtViewSmall.getText().toString().isEmpty();
         if (!hasOpeningParenthesis) {
-            if (txtViewSmall.getText().toString().endsWith("+")
-                    || txtViewSmall.getText().toString().endsWith("-")
-                    || txtViewSmall.getText().toString().endsWith("×")
-                    || txtViewSmall.getText().toString().endsWith("÷")
-                    || txtViewSmall.getText().toString().endsWith("(")
-                    || txtViewSmall.getText().toString().isEmpty()) {
+            if (endsWithOpCondition) {
                 String getTextOParenth = txtViewSmall.getText()+"(";
                 txtViewSmall.setText(getTextOParenth);
                 backgroundSequence = backgroundSequence.trim() + "(";
@@ -403,12 +432,7 @@ public class MainActivity extends AppCompatActivity {
             hasOpeningParenthesis = true;
         }
         else {
-            if (txtViewSmall.getText().toString().endsWith("+")
-                    || txtViewSmall.getText().toString().endsWith("-")
-                    || txtViewSmall.getText().toString().endsWith("×")
-                    || txtViewSmall.getText().toString().endsWith("÷")
-                    || txtViewSmall.getText().toString().endsWith("(")
-                    || txtViewSmall.getText().toString().isEmpty()) {
+            if (endsWithOpCondition) {
                 String getTextOParenth = txtViewSmall.getText()+"(";
                 txtViewSmall.setText(getTextOParenth);
                 backgroundSequence = backgroundSequence.trim() + "(";
@@ -429,21 +453,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
-    }
-
-    public void toInputChar(String s) {
-        if (txtViewSmall.getText().toString().endsWith(")")) {
-            String getTextChar = txtViewSmall.getText() + "×" + s;
-            txtViewSmall.setText(getTextChar);
-            backgroundSequence = backgroundSequence.trim() + "×" + s;
-        }
-        else {
-            String getTextChar = txtViewSmall.getText() + s;
-            txtViewSmall.setText(getTextChar);
-            backgroundSequence = backgroundSequence.trim() + s;
-        }
-
-    }
+    } //toCheckParenthesis()
 
 
     public void toSolve(String testToSolve, String op, boolean hasParenthesis) {
@@ -486,7 +496,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         txtViewBig.setText(backgroundSequence);
-        System.out.println(txtViewBig.getText());
+
     } //toSolve
 
     public void toSolveHelperMethod(String testToSolve, String op,
