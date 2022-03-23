@@ -146,223 +146,21 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("First priority to solve: " + testToSolve);
 
 
-                    if (testToSolve.contains("×") || testToSolve.contains("÷") || testToSolve.contains("%")) {
-                        if (testToSolve.contains("×")) {
-                            determineOps = determineOps + 2;
-                        }
-
-                        if (testToSolve.contains("÷")) {
-                            determineOps = determineOps + 3;
-                        }
-
-                        if (testToSolve.contains("%")) {
-                            determineOps = determineOps + 4;
-                        }
-                        System.out.println("Current value of determine ops: " + determineOps);
-                        switch (determineOps) {
-                            case 2:
-                                toSolve(testToSolve,"×",true);
-                                break;
-                            case 3:
-                                toSolve(testToSolve,"÷",true);
-                                break;
-                            case 4:
-                                toSolve(testToSolve,"%",true);
-                                break;
-                            case 5:
-                                if (testToSolve.indexOf("×") < testToSolve.indexOf("÷")) {
-                                    toSolve(testToSolve,"×",true);
-                                }
-                                if (testToSolve.indexOf("÷") < testToSolve.indexOf("×")) {
-                                    toSolve(testToSolve,"÷",true);
-                                }
-                                break;
-                            case 6:
-                                if (testToSolve.indexOf("×") < testToSolve.indexOf("%")) {
-                                    toSolve(testToSolve,"×",true);
-                                }
-                                if (testToSolve.indexOf("%") < testToSolve.indexOf("×")) {
-                                    toSolve(testToSolve,"%",true);
-                                }
-                                break;
-                            case 7:
-                                if (testToSolve.indexOf("÷") < testToSolve.indexOf("%")) {
-                                    toSolve(testToSolve,"÷",true);
-                                }
-                                if (testToSolve.indexOf("%") < testToSolve.indexOf("÷")) {
-                                    toSolve(testToSolve,"%",true);
-                                }
-                                break;
-                            case 9:
-                                if (testToSolve.indexOf("×") < testToSolve.indexOf("%") && testToSolve.indexOf("×") < testToSolve.indexOf("÷")) {
-                                    toSolve(testToSolve,"×",true);
-                                }
-                                if (testToSolve.indexOf("%") < testToSolve.indexOf("×") && testToSolve.indexOf("%") < testToSolve.indexOf("÷")) {
-                                    toSolve(testToSolve,"%",true);
-                                }
-                                if (testToSolve.indexOf("÷") < testToSolve.indexOf("×") && testToSolve.indexOf("÷") < testToSolve.indexOf("%")) {
-                                    toSolve(testToSolve,"÷",true);
-                                }
-                                break;
-                        }
-                    }
-
-                    else if (testToSolve.contains("+")) {
-                        toSolve(testToSolve,"+",true);
-                    }
-
-                    else {
-                        backgroundSequence = backgroundSequence.replace(backgroundSequence.substring(indexInnermostOParenthesis,indexInnermostCParenthesis+1),testToSolve);
-                        System.out.println("This was chosen");
-                    }
-
-                    determineOps = 0;
+                    toCalcHelperMethod(testToSolve,true);
                 }
                 while (backgroundSequence.contains("+") || backgroundSequence.contains("×") || backgroundSequence.contains("÷") || backgroundSequence.contains("%")) {
                     String testToSolve = backgroundSequence;
                     System.out.println("Sequence now solving (1): " + testToSolve);
 
-
-                    if (testToSolve.contains("×") || testToSolve.contains("÷") || testToSolve.contains("%")) {
-                        if (testToSolve.contains("×")) {
-                            determineOps = determineOps + 2;
-                        }
-
-                        if (testToSolve.contains("÷")) {
-                            determineOps = determineOps + 3;
-                        }
-
-                        if (testToSolve.contains("%")) {
-                            determineOps = determineOps + 4;
-                        }
-                        System.out.println("Current value of determine ops: " + determineOps);
-                        switch (determineOps) {
-                            case 2:
-                                toSolve(testToSolve,"×",false);
-                                break;
-                            case 3:
-                                toSolve(testToSolve,"÷",false);
-                                break;
-                            case 4:
-                                toSolve(testToSolve,"%",false);
-                                break;
-                            case 5:
-                                if (testToSolve.indexOf("×") < testToSolve.indexOf("÷")) {
-                                    toSolve(testToSolve,"×",false);
-                                }
-                                if (testToSolve.indexOf("÷") < testToSolve.indexOf("×")) {
-                                    toSolve(testToSolve,"÷",false);
-                                }
-                                break;
-                            case 6:
-                                if (testToSolve.indexOf("×") < testToSolve.indexOf("%")) {
-                                    toSolve(testToSolve,"×",false);
-                                }
-                                if (testToSolve.indexOf("%") < testToSolve.indexOf("×")) {
-                                    toSolve(testToSolve,"%",false);
-                                }
-                                break;
-                            case 7:
-                                if (testToSolve.indexOf("÷") < testToSolve.indexOf("%")) {
-                                    toSolve(testToSolve,"÷",false);
-                                }
-                                if (testToSolve.indexOf("%") < testToSolve.indexOf("÷")) {
-                                    toSolve(testToSolve,"%",false);
-                                }
-                                break;
-                            case 9:
-                                if (testToSolve.indexOf("×") < testToSolve.indexOf("%") && testToSolve.indexOf("×") < testToSolve.indexOf("÷")) {
-                                    toSolve(testToSolve,"×",false);
-                                }
-                                if (testToSolve.indexOf("%") < testToSolve.indexOf("×") && testToSolve.indexOf("%") < testToSolve.indexOf("÷")) {
-                                    toSolve(testToSolve,"%",false);
-                                }
-                                if (testToSolve.indexOf("÷") < testToSolve.indexOf("×") && testToSolve.indexOf("÷") < testToSolve.indexOf("%")) {
-                                    toSolve(testToSolve,"÷",false);
-                                }
-                                break;
-                        }
-                    }
-
-
-                    else if (testToSolve.contains("+")) {
-                        toSolve(testToSolve,"+",false);
-                    }
-                    determineOps = 0;
+                    toCalcHelperMethod(testToSolve,false);
                 }
-                }
+            }
             else {
                 while (backgroundSequence.contains("+") || backgroundSequence.contains("×") || backgroundSequence.contains("÷") || backgroundSequence.contains("%")) {
                     String testToSolve = backgroundSequence;
                     System.out.println("Sequence now solving (2): " + testToSolve);
 
-
-                    if (testToSolve.contains("×") || testToSolve.contains("÷") || testToSolve.contains("%")) {
-                        if (testToSolve.contains("×")) {
-                            determineOps = determineOps + 2;
-                        }
-
-                        if (testToSolve.contains("÷")) {
-                            determineOps = determineOps + 3;
-                        }
-
-                        if (testToSolve.contains("%")) {
-                            determineOps = determineOps + 4;
-                        }
-                        System.out.println("Current value of determine ops: " + determineOps);
-                        switch (determineOps) {
-                            case 2:
-                                toSolve(testToSolve,"×",false);
-                                break;
-                            case 3:
-                                toSolve(testToSolve,"÷",false);
-                                break;
-                            case 4:
-                                toSolve(testToSolve,"%",false);
-                                break;
-                            case 5:
-                                if (testToSolve.indexOf("×") < testToSolve.indexOf("÷")) {
-                                    toSolve(testToSolve,"×",false);
-                                }
-                                if (testToSolve.indexOf("÷") < testToSolve.indexOf("×")) {
-                                    toSolve(testToSolve,"÷",false);
-                                }
-                                break;
-                            case 6:
-                                if (testToSolve.indexOf("×") < testToSolve.indexOf("%")) {
-                                    toSolve(testToSolve,"×",false);
-                                }
-                                if (testToSolve.indexOf("%") < testToSolve.indexOf("×")) {
-                                    toSolve(testToSolve,"%",false);
-                                }
-                                break;
-                            case 7:
-                                if (testToSolve.indexOf("÷") < testToSolve.indexOf("%")) {
-                                    toSolve(testToSolve,"÷",false);
-                                }
-                                if (testToSolve.indexOf("%") < testToSolve.indexOf("÷")) {
-                                    toSolve(testToSolve,"%",false);
-                                }
-                                break;
-                            case 9:
-                                if (testToSolve.indexOf("×") < testToSolve.indexOf("%") && testToSolve.indexOf("×") < testToSolve.indexOf("÷")) {
-                                    toSolve(testToSolve,"×",false);
-                                }
-                                if (testToSolve.indexOf("%") < testToSolve.indexOf("×") && testToSolve.indexOf("%") < testToSolve.indexOf("÷")) {
-                                    toSolve(testToSolve,"%",false);
-                                }
-                                if (testToSolve.indexOf("÷") < testToSolve.indexOf("×") && testToSolve.indexOf("÷") < testToSolve.indexOf("%")) {
-                                    toSolve(testToSolve,"÷",false);
-                                }
-                                break;
-                        }
-                    }
-
-
-                    else if (testToSolve.contains("+")) {
-                        toSolve(testToSolve,"+",false);
-                    }
-                    determineOps = 0;
+                    toCalcHelperMethod(testToSolve,false);
                 }
             }
         }
@@ -378,7 +176,84 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-    }
+    } //toCalc()
+
+    public void toCalcHelperMethod(String testToSolve, boolean getParenthesis) {
+        if (testToSolve.contains("×") || testToSolve.contains("÷") || testToSolve.contains("%")) {
+            if (testToSolve.contains("×")) {
+                determineOps += 2;
+            }
+
+            if (testToSolve.contains("÷")) {
+                determineOps += 3;
+            }
+
+            if (testToSolve.contains("%")) {
+                determineOps += 4;
+            }
+            System.out.println("Current value of determine ops: " + determineOps);
+            switch (determineOps) {
+                case 2:
+                    toSolve(testToSolve,"×",getParenthesis);
+                    break;
+                case 3:
+                    toSolve(testToSolve,"÷",getParenthesis);
+                    break;
+                case 4:
+                    toSolve(testToSolve,"%",getParenthesis);
+                    break;
+                case 5:
+                    if (testToSolve.indexOf("×") < testToSolve.indexOf("÷")) {
+                        toSolve(testToSolve,"×",getParenthesis);
+                    }
+                    if (testToSolve.indexOf("÷") < testToSolve.indexOf("×")) {
+                        toSolve(testToSolve,"÷",getParenthesis);
+                    }
+                    break;
+                case 6:
+                    if (testToSolve.indexOf("×") < testToSolve.indexOf("%")) {
+                        toSolve(testToSolve,"×",getParenthesis);
+                    }
+                    if (testToSolve.indexOf("%") < testToSolve.indexOf("×")) {
+                        toSolve(testToSolve,"%",getParenthesis);
+                    }
+                    break;
+                case 7:
+                    if (testToSolve.indexOf("÷") < testToSolve.indexOf("%")) {
+                        toSolve(testToSolve,"÷",getParenthesis);
+                    }
+                    if (testToSolve.indexOf("%") < testToSolve.indexOf("÷")) {
+                        toSolve(testToSolve,"%",getParenthesis);
+                    }
+                    break;
+                case 9:
+                    if (testToSolve.indexOf("×") < testToSolve.indexOf("%") && testToSolve.indexOf("×") < testToSolve.indexOf("÷")) {
+                        toSolve(testToSolve,"×",getParenthesis);
+                    }
+                    if (testToSolve.indexOf("%") < testToSolve.indexOf("×") && testToSolve.indexOf("%") < testToSolve.indexOf("÷")) {
+                        toSolve(testToSolve,"%",getParenthesis);
+                    }
+                    if (testToSolve.indexOf("÷") < testToSolve.indexOf("×") && testToSolve.indexOf("÷") < testToSolve.indexOf("%")) {
+                        toSolve(testToSolve,"÷",getParenthesis);
+                    }
+                    break;
+            }
+        }
+
+        else if (testToSolve.contains("+")) {
+            toSolve(testToSolve,"+",getParenthesis);
+        }
+
+        else {
+            if (getParenthesis) {
+                backgroundSequence = backgroundSequence.replace(backgroundSequence.substring(indexInnermostOParenthesis,indexInnermostCParenthesis+1),testToSolve);
+                System.out.println("This was chosen");
+            }
+        }
+
+        determineOps = 0;
+    } //toCalcHelperMethod
+
 
     public void toClear() {
         String testString = txtViewSmall.getText().toString();
@@ -410,7 +285,7 @@ public class MainActivity extends AppCompatActivity {
         else {
             txtViewBig.setText("0".trim());
         }
-    }
+    } //toClear()
 
 
     public void toCheckParenthesis() {
