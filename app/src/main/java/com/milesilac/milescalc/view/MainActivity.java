@@ -1,4 +1,4 @@
-package com.milesilac.milescalc;
+package com.milesilac.milescalc.view;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,7 +8,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import com.milesilac.milescalc.CalculationLogic;
+import com.milesilac.milescalc.InputLogic;
+import com.milesilac.milescalc.R;
+import com.milesilac.milescalc.common.CalculatorContract;
+
+public class MainActivity extends AppCompatActivity implements CalculatorContract.View {
+
+    CalculatorContract.InputLogic inputLogic;
+    CalculatorContract.CalculationLogic calculationLogic;
 
     private TextView txtViewSmall,txtViewBig;
     private boolean hasOpeningParenthesis = false;
@@ -55,9 +63,21 @@ public class MainActivity extends AppCompatActivity {
         buttons[18] = findViewById(R.id.btnC);
         buttons[19] = findViewById(R.id.btnQuit);
 
+        inputLogic = new InputLogic(this);
+        calculationLogic = new CalculationLogic(this);
+
+
         for (int i=0;i<10;i++) {
             int currentNum = i;
-            buttons[i].setOnClickListener(v -> toInputChar(String.valueOf(currentNum)));
+//            buttons[i].setOnClickListener(v -> toInputChar(String.valueOf(currentNum)));
+//            buttons[i].setOnClickListener(v -> txtViewSmall.setText(InputCharacters.toInputChar(txtViewSmall.getText().toString(), backgroundSequence, String.valueOf(currentNum))));
+
+            buttons[i].setOnClickListener(v -> {
+                inputLogic.inputNum(String.valueOf(currentNum));
+                System.out.println(inputLogic.readCurrentString());
+                txtViewSmall.setText(inputLogic.readCurrentString());
+            });
+
         }
 
         for (int i=10;i<20;i++) {
@@ -65,31 +85,60 @@ public class MainActivity extends AppCompatActivity {
             buttons[i].setOnClickListener(v -> {
                 switch (currentOp) {
                     case 10:
-                        getTextOp("+");
+//                        getTextOp("+");
+//                        txtViewSmall.setText(InputCharacters.getTextOp(txtViewSmall.getText().toString(),backgroundSequence,"+"));
+                        inputLogic.inputNum("+");
+                        System.out.println(inputLogic.readCurrentString());
+                        txtViewSmall.setText(inputLogic.readCurrentString());
                         break;
                     case 11:
-                        getTextOp("-");
+//                        getTextOp("-");
+//                        txtViewSmall.setText(InputCharacters.getTextOp(txtViewSmall.getText().toString(),backgroundSequence,"-"));
+                        inputLogic.inputNum("-");
+                        System.out.println(inputLogic.readCurrentString());
+                        txtViewSmall.setText(inputLogic.readCurrentString());
                         break;
                     case 12:
-                        getTextOp("×");
+//                        getTextOp("×");
+//                        txtViewSmall.setText(InputCharacters.getTextOp(txtViewSmall.getText().toString(),backgroundSequence,"×"));
+                        inputLogic.inputNum("×");
+                        System.out.println(inputLogic.readCurrentString());
+                        txtViewSmall.setText(inputLogic.readCurrentString());
                         break;
                     case 13:
-                        getTextOp("÷");
+//                        getTextOp("÷");
+//                        txtViewSmall.setText(InputCharacters.getTextOp(txtViewSmall.getText().toString(),backgroundSequence,"÷"));
+                        inputLogic.inputNum("÷");
+                        System.out.println(inputLogic.readCurrentString());
+                        txtViewSmall.setText(inputLogic.readCurrentString());
                         break;
                     case 14:
-                        getTextOp("%");
+//                        getTextOp("%");
+//                        txtViewSmall.setText(InputCharacters.getTextOp(txtViewSmall.getText().toString(),backgroundSequence,"%"));
+                        inputLogic.inputNum("%");
+                        System.out.println(inputLogic.readCurrentString());
+                        txtViewSmall.setText(inputLogic.readCurrentString());
                         break;
                     case 15:
-                        getTextOp(".");
+//                        getTextOp(".");
+//                        txtViewSmall.setText(InputCharacters.getTextOp(txtViewSmall.getText().toString(),backgroundSequence,"."));
+                        inputLogic.inputNum(".");
+                        System.out.println(inputLogic.readCurrentString());
+                        txtViewSmall.setText(inputLogic.readCurrentString());
                         break;
                     case 16:
-                        toCheckParenthesis();
+//                        toCheckParenthesis();
+                        inputLogic.inputOp("parentheses");
+                        System.out.println(inputLogic.readCurrentString());
+                        txtViewSmall.setText(inputLogic.readCurrentString());
                         break;
                     case 17:
                         toCalc();
                         break;
                     case 18:
-                        toClear();
+                        inputLogic.deleteLastChar();
+                        System.out.println(inputLogic.readCurrentString());
+                        txtViewSmall.setText(inputLogic.readCurrentString());
                         break;
                     case 19:
                         finish();
@@ -99,39 +148,39 @@ public class MainActivity extends AppCompatActivity {
         }
 
         buttons[18].setOnLongClickListener(v -> {
-            while (!txtViewBig.getText().toString().equals("0") && !txtViewSmall.getText().toString().equals("0")) {
-                toClear();
+            while (!inputLogic.readCurrentString().isEmpty()) {
+                inputLogic.deleteLastChar();
             }
-            return true;
+            return false;
         });
 
     }
 
-    public void toInputChar(String s) {
-        if (txtViewSmall.getText().toString().endsWith(")")) {
-            String getTextChar = txtViewSmall.getText() + "×" + s;
-            txtViewSmall.setText(getTextChar);
-            backgroundSequence = backgroundSequence.trim() + "×" + s;
-        }
-        else {
-            String getTextChar = txtViewSmall.getText() + s;
-            txtViewSmall.setText(getTextChar);
-            backgroundSequence = backgroundSequence.trim() + s;
-        }
-        System.out.println("current backgroundsequence: " + backgroundSequence);
-    } //toInputChar
+//    public void toInputChar(String s) {
+//        if (txtViewSmall.getText().toString().endsWith(")")) {
+//            String getTextChar = txtViewSmall.getText() + "×" + s;
+//            txtViewSmall.setText(getTextChar);
+//            backgroundSequence = backgroundSequence.trim() + "×" + s;
+//        }
+//        else {
+//            String getTextChar = txtViewSmall.getText() + s;
+//            txtViewSmall.setText(getTextChar);
+//            backgroundSequence = backgroundSequence.trim() + s;
+//        }
+//        System.out.println("current backgroundsequence: " + backgroundSequence);
+//    } //toInputChar
 
-    public void getTextOp(String op) {
-        String getTextWithOp = txtViewSmall.getText() + op;
-        txtViewSmall.setText(getTextWithOp);
-        if (op.equals("-")) {
-            backgroundSequence = backgroundSequence.trim() + "+-";
-        }
-        else {
-            backgroundSequence = backgroundSequence.trim() + op;
-        }
-        System.out.println("current backgroundsequence: " + backgroundSequence);
-    } //getTextOp
+//    public void getTextOp(String op) {
+//        String getTextWithOp = txtViewSmall.getText() + op;
+//        txtViewSmall.setText(getTextWithOp);
+//        if (op.equals("-")) {
+//            backgroundSequence = backgroundSequence.trim() + "+-";
+//        }
+//        else {
+//            backgroundSequence = backgroundSequence.trim() + op;
+//        }
+//        System.out.println("current backgroundsequence: " + backgroundSequence);
+//    } //getTextOp
 
 
     public void toCalc() {
@@ -255,80 +304,80 @@ public class MainActivity extends AppCompatActivity {
     } //toCalcHelperMethod
 
 
-    public void toClear() {
-        String testString = txtViewSmall.getText().toString();
-        if (!testString.trim().equals("")) {
-           int endCharIndex = txtViewSmall.getText().toString().length() - 1;
-           int backgroundEndCharIndex = backgroundSequence.length() - 1;
-           if (txtViewSmall.getText().toString().charAt(endCharIndex) == '(') {
-               OPCount--;
-           }
-           if (txtViewSmall.getText().toString().charAt(endCharIndex) == ')') {
-               CPCount--;
-           }
-           String tempString = txtViewSmall.getText().toString().substring(0, endCharIndex);
-           String backgroundTempString;
-           if (backgroundSequence.endsWith("-")) {
-               backgroundTempString = backgroundSequence.substring(0,backgroundEndCharIndex-1);
-           }
-           else {
-               backgroundTempString = backgroundSequence.substring(0,backgroundEndCharIndex);
-           }
-           backgroundSequence = backgroundTempString;
-           txtViewSmall.setText(tempString);
-
-
-           Toast.makeText(this, "clear in process", Toast.LENGTH_SHORT).show();
-           System.out.println("current backgroundsequence: " + backgroundSequence);
-           System.out.println("This is the old String:" + tempString);
-        }
-        else {
-            txtViewBig.setText("0".trim());
-        }
-    } //toClear()
-
-
-    public void toCheckParenthesis() {
-        boolean endsWithOpCondition = txtViewSmall.getText().toString().endsWith("+") || txtViewSmall.getText().toString().endsWith("-")
-                || txtViewSmall.getText().toString().endsWith("×") || txtViewSmall.getText().toString().endsWith("÷")
-                || txtViewSmall.getText().toString().endsWith("(") || txtViewSmall.getText().toString().isEmpty();
-        if (!hasOpeningParenthesis) {
-            if (endsWithOpCondition) {
-                String getTextOParenth = txtViewSmall.getText()+"(";
-                txtViewSmall.setText(getTextOParenth);
-                backgroundSequence = backgroundSequence.trim() + "(";
-            }
-            else {
-                String getTextOParenth = txtViewSmall.getText()+"x(";
-                txtViewSmall.setText(getTextOParenth);
-                backgroundSequence = backgroundSequence.trim() + "x(";
-            }
-            OPCount++;
-            hasOpeningParenthesis = true;
-        }
-        else {
-            if (endsWithOpCondition) {
-                String getTextOParenth = txtViewSmall.getText()+"(";
-                txtViewSmall.setText(getTextOParenth);
-                backgroundSequence = backgroundSequence.trim() + "(";
-                OPCount++;
-                hasOpeningParenthesis = true;
-            }
-            else {
-                String getTextCParenth = txtViewSmall.getText()+")";
-                txtViewSmall.setText(getTextCParenth);
-                backgroundSequence = backgroundSequence.trim() + ")";
-                CPCount++;
-                if (txtViewSmall.getText().toString().endsWith(")")) {
-                    hasOpeningParenthesis = OPCount != CPCount;
-                }
-                else {
-                    hasOpeningParenthesis = false;
-                }
-            }
-
-        }
-    } //toCheckParenthesis()
+//    public void toClear() {
+//        String testString = txtViewSmall.getText().toString();
+//        if (!testString.trim().equals("")) {
+//           int endCharIndex = txtViewSmall.getText().toString().length() - 1;
+//           int backgroundEndCharIndex = backgroundSequence.length() - 1;
+//           if (txtViewSmall.getText().toString().charAt(endCharIndex) == '(') {
+//               OPCount--;
+//           }
+//           if (txtViewSmall.getText().toString().charAt(endCharIndex) == ')') {
+//               CPCount--;
+//           }
+//           String tempString = txtViewSmall.getText().toString().substring(0, endCharIndex);
+//           String backgroundTempString;
+//           if (backgroundSequence.endsWith("-")) {
+//               backgroundTempString = backgroundSequence.substring(0,backgroundEndCharIndex-1);
+//           }
+//           else {
+//               backgroundTempString = backgroundSequence.substring(0,backgroundEndCharIndex);
+//           }
+//           backgroundSequence = backgroundTempString;
+//           txtViewSmall.setText(tempString);
+//
+//
+//           Toast.makeText(this, "clear in process", Toast.LENGTH_SHORT).show();
+//           System.out.println("current backgroundsequence: " + backgroundSequence);
+//           System.out.println("This is the old String:" + tempString);
+//        }
+//        else {
+//            txtViewBig.setText("0".trim());
+//        }
+//    } //toClear()
+//
+//
+//    public void toCheckParenthesis() {
+//        boolean endsWithOpCondition = txtViewSmall.getText().toString().endsWith("+") || txtViewSmall.getText().toString().endsWith("-")
+//                || txtViewSmall.getText().toString().endsWith("×") || txtViewSmall.getText().toString().endsWith("÷")
+//                || txtViewSmall.getText().toString().endsWith("(") || txtViewSmall.getText().toString().isEmpty();
+//        if (!hasOpeningParenthesis) {
+//            if (endsWithOpCondition) {
+//                String getTextOParenth = txtViewSmall.getText()+"(";
+//                txtViewSmall.setText(getTextOParenth);
+//                backgroundSequence = backgroundSequence.trim() + "(";
+//            }
+//            else {
+//                String getTextOParenth = txtViewSmall.getText()+"x(";
+//                txtViewSmall.setText(getTextOParenth);
+//                backgroundSequence = backgroundSequence.trim() + "x(";
+//            }
+//            OPCount++;
+//            hasOpeningParenthesis = true;
+//        }
+//        else {
+//            if (endsWithOpCondition) {
+//                String getTextOParenth = txtViewSmall.getText()+"(";
+//                txtViewSmall.setText(getTextOParenth);
+//                backgroundSequence = backgroundSequence.trim() + "(";
+//                OPCount++;
+//                hasOpeningParenthesis = true;
+//            }
+//            else {
+//                String getTextCParenth = txtViewSmall.getText()+")";
+//                txtViewSmall.setText(getTextCParenth);
+//                backgroundSequence = backgroundSequence.trim() + ")";
+//                CPCount++;
+//                if (txtViewSmall.getText().toString().endsWith(")")) {
+//                    hasOpeningParenthesis = OPCount != CPCount;
+//                }
+//                else {
+//                    hasOpeningParenthesis = false;
+//                }
+//            }
+//
+//        }
+//    } //toCheckParenthesis()
 
 
     public void toSolve(String testToSolve, String op, boolean hasParenthesis) {
