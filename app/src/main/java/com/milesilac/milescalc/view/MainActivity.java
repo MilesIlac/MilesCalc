@@ -87,42 +87,42 @@ public class MainActivity extends AppCompatActivity implements CalculatorContrac
                     case 10:
 //                        getTextOp("+");
 //                        txtViewSmall.setText(InputCharacters.getTextOp(txtViewSmall.getText().toString(),backgroundSequence,"+"));
-                        inputLogic.inputNum("+");
+                        inputLogic.inputOp("+");
                         System.out.println(inputLogic.readCurrentString());
                         txtViewSmall.setText(inputLogic.readCurrentString());
                         break;
                     case 11:
 //                        getTextOp("-");
 //                        txtViewSmall.setText(InputCharacters.getTextOp(txtViewSmall.getText().toString(),backgroundSequence,"-"));
-                        inputLogic.inputNum("-");
+                        inputLogic.inputOp("-");
                         System.out.println(inputLogic.readCurrentString());
                         txtViewSmall.setText(inputLogic.readCurrentString());
                         break;
                     case 12:
 //                        getTextOp("×");
 //                        txtViewSmall.setText(InputCharacters.getTextOp(txtViewSmall.getText().toString(),backgroundSequence,"×"));
-                        inputLogic.inputNum("×");
+                        inputLogic.inputOp("×");
                         System.out.println(inputLogic.readCurrentString());
                         txtViewSmall.setText(inputLogic.readCurrentString());
                         break;
                     case 13:
 //                        getTextOp("÷");
 //                        txtViewSmall.setText(InputCharacters.getTextOp(txtViewSmall.getText().toString(),backgroundSequence,"÷"));
-                        inputLogic.inputNum("÷");
+                        inputLogic.inputOp("÷");
                         System.out.println(inputLogic.readCurrentString());
                         txtViewSmall.setText(inputLogic.readCurrentString());
                         break;
                     case 14:
 //                        getTextOp("%");
 //                        txtViewSmall.setText(InputCharacters.getTextOp(txtViewSmall.getText().toString(),backgroundSequence,"%"));
-                        inputLogic.inputNum("%");
+                        inputLogic.inputOp("%");
                         System.out.println(inputLogic.readCurrentString());
                         txtViewSmall.setText(inputLogic.readCurrentString());
                         break;
                     case 15:
 //                        getTextOp(".");
 //                        txtViewSmall.setText(InputCharacters.getTextOp(txtViewSmall.getText().toString(),backgroundSequence,"."));
-                        inputLogic.inputNum(".");
+                        inputLogic.inputOp(".");
                         System.out.println(inputLogic.readCurrentString());
                         txtViewSmall.setText(inputLogic.readCurrentString());
                         break;

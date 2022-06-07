@@ -32,33 +32,22 @@ public class StringChecker implements CalculatorContract.StringChecker {
 
     @Override
     public int setOPCount(String count) {
-        if (count.equals("plus")) {
-            OPCount++;
-
-        }
-        else {
-            OPCount--;
-        }
+        if (count.equals("plus")) OPCount++;
+        else OPCount--;
         System.out.println("OPCount: " + OPCount);
         return OPCount;
     }
 
     @Override
     public int setCPCount(String count) {
-        if (count.equals("plus")) {
-            CPCount++;
-        }
-        else {
-            CPCount--;
-        }
+        if (count.equals("plus")) CPCount++;
+        else CPCount--;
         System.out.println("CPCount: " + CPCount);
         return CPCount;
     }
 
     @Override
-    public boolean checkPCounts() {
-        return OPCount == CPCount;
-    }
+    public boolean checkPCounts() { return OPCount == CPCount; }
 
 
 }

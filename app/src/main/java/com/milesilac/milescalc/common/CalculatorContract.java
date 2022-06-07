@@ -15,6 +15,7 @@ public interface CalculatorContract {
         void inputNum(String num);
         void inputOp(String op);
         String readCurrentString();
+        String readActualCurrentStringToSolve();
         void deleteLastChar();
     }
 
@@ -27,7 +28,7 @@ public interface CalculatorContract {
 
 
     interface CalculationLogic {
-
+        String solveString(String currentString);
     }
 
 

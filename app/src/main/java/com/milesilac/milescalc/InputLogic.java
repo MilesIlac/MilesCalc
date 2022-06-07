@@ -1,6 +1,8 @@
 package com.milesilac.milescalc;
 
 
+import android.util.Log;
+
 import com.milesilac.milescalc.common.CalculatorContract;
 import com.milesilac.milescalc.models.InputString;
 
@@ -45,6 +47,10 @@ public class InputLogic implements CalculatorContract.InputLogic {
                 }
             }
         }
+        if (op.equals("-")) {
+            inputString.setInputString(inputString.getInputString() + "+-");
+            Log.i("check","Actual string: " + inputString.getInputString());
+        }
         else {
             inputString.setInputString(inputString.getInputString() + op);
         }
@@ -53,6 +59,14 @@ public class InputLogic implements CalculatorContract.InputLogic {
 
     @Override
     public String readCurrentString() {
+        if (inputString.getInputString().contains("+-")) {
+            return inputString.getInputString().replace("+-","-");
+        }
+        else return inputString.getInputString();
+    }
+
+    @Override
+    public String readActualCurrentStringToSolve() {
         return inputString.getInputString();
     }
 
@@ -67,6 +81,10 @@ public class InputLogic implements CalculatorContract.InputLogic {
             else if (inputString.getInputString().endsWith(")")) {
                 String newInputString = inputString.getInputString().substring(0,inputString.getInputString().length()-1).trim();
                 stringChecker.setCPCount("minus");
+                inputString.setInputString(newInputString);
+            }
+            else if (inputString.getInputString().endsWith("+-")) {
+                String newInputString = inputString.getInputString().substring(0,inputString.getInputString().length()-2).trim();
                 inputString.setInputString(newInputString);
             }
             else {
