@@ -23,6 +23,8 @@ public interface CalculatorContract {
         boolean attemptToAddParentheses();
         int setOPCount(String count);
         int setCPCount(String count);
+        boolean getOPStatus();
+        void setOPStatus(boolean o);
         boolean checkPCounts();
     }
 

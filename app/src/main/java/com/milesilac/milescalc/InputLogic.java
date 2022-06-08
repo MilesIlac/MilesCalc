@@ -26,28 +26,33 @@ public class InputLogic implements CalculatorContract.InputLogic {
     @Override
     public void inputOp(String op) {
         if (op.equals("parentheses")) {
-            if (stringChecker.attemptToAddParentheses()) {
-                if (stringChecker.checkPCounts()) {
+            if (!stringChecker.getOPStatus()) {
+                if (stringChecker.attemptToAddParentheses()) {
                     inputString.setInputString(inputString.getInputString() + "(");
-                    stringChecker.setOPCount("plus");
                 }
                 else {
-                    inputString.setInputString(inputString.getInputString() + ")");
-                    stringChecker.setCPCount("plus");
+                    inputString.setInputString(inputString.getInputString() + "×(");
                 }
+                stringChecker.setOPCount("plus");
+                stringChecker.setOPStatus(true);
             }
             else {
-                if (stringChecker.checkPCounts()) {
-                    inputString.setInputString(inputString.getInputString() + "×(");
+                if (stringChecker.attemptToAddParentheses()) {
+                    inputString.setInputString(inputString.getInputString() + "(");
                     stringChecker.setOPCount("plus");
+                    stringChecker.setOPStatus(true);
                 }
                 else {
                     inputString.setInputString(inputString.getInputString() + ")");
                     stringChecker.setCPCount("plus");
+                    if (inputString.getInputString().endsWith(")")) {
+                        stringChecker.setOPStatus(!stringChecker.checkPCounts());
+                    }
+                    else stringChecker.setOPStatus(false);
                 }
             }
         }
-        if (op.equals("-")) {
+        else if (op.equals("-")) {
             inputString.setInputString(inputString.getInputString() + "+-");
             Log.i("check","Actual string: " + inputString.getInputString());
         }

@@ -10,13 +10,21 @@ import com.milesilac.milescalc.common.CalculatorContract;
 public class StringChecker implements CalculatorContract.StringChecker {
 
     CalculatorContract.InputLogic inputLogic;
+    CalculatorContract.CalculationLogic calculationLogic;
     int OPCount = 0;
     int CPCount = 0;
+    boolean hasOP = false;
 
 
     public StringChecker(CalculatorContract.InputLogic inputLogic) {
         this.inputLogic = inputLogic;
     }
+
+    public StringChecker(CalculatorContract.CalculationLogic calculationLogic) {
+        this.calculationLogic = calculationLogic;
+    }
+
+
 
     @Override
     public boolean attemptToAddParentheses() {
@@ -45,6 +53,12 @@ public class StringChecker implements CalculatorContract.StringChecker {
         System.out.println("CPCount: " + CPCount);
         return CPCount;
     }
+
+    @Override
+    public boolean getOPStatus() { return hasOP; }
+
+    @Override
+    public void setOPStatus(boolean o) { this.hasOP = o; }
 
     @Override
     public boolean checkPCounts() { return OPCount == CPCount; }
