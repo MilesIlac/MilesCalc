@@ -67,6 +67,9 @@ public class InputLogic implements CalculatorContract.InputLogic {
         if (inputString.getInputString().contains("+-")) {
             return inputString.getInputString().replace("+-","-");
         }
+        if (inputString.getInputString().endsWith(".0")) {
+            return inputString.getInputString().replace(".0","").trim();
+        }
         else return inputString.getInputString();
     }
 

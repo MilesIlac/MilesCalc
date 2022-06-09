@@ -139,6 +139,9 @@ public class MainActivity extends AppCompatActivity implements CalculatorContrac
                         inputLogic.deleteLastChar();
                         System.out.println(inputLogic.readCurrentString());
                         txtViewSmall.setText(inputLogic.readCurrentString());
+                        if (txtViewSmall.getText().equals("")) {
+                            txtViewBig.setText("0");
+                        }
                         break;
                     case 19:
                         finish();
@@ -150,6 +153,9 @@ public class MainActivity extends AppCompatActivity implements CalculatorContrac
         buttons[18].setOnLongClickListener(v -> {
             while (!inputLogic.readCurrentString().isEmpty()) {
                 inputLogic.deleteLastChar();
+                if (txtViewSmall.getText().equals("")) {
+                    txtViewBig.setText("0");
+                }
             }
             return false;
         });

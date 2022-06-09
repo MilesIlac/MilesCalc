@@ -152,7 +152,11 @@ public class CalculationLogic implements CalculatorContract.CalculationLogic {
 //        }
 //
 
-        return currentSolved;
+        if (currentSolved.endsWith(".0")) {
+            return currentSolved.replace(".0","").trim();
+        }
+        else { return currentSolved; }
+
     }
 
 
