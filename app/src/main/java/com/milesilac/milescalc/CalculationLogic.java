@@ -1,20 +1,16 @@
 package com.milesilac.milescalc;
 
-import android.util.Log;
 
+import android.util.Log;
 
 import com.milesilac.milescalc.common.CalculatorContract;
 
 
 public class CalculationLogic implements CalculatorContract.CalculationLogic {
 
-    CalculatorContract.View view;
-    CalculatorContract.StringChecker stringChecker = new StringChecker(this);
+    private final CalculatorContract.StringChecker stringChecker = new StringChecker();
 
-
-
-    public CalculationLogic(CalculatorContract.View view) {
-        this.view = view;
+    public CalculationLogic() {
     }
 
 
@@ -49,114 +45,11 @@ public class CalculationLogic implements CalculatorContract.CalculationLogic {
         else {
             Log.i("ERROR?","Grouping Error; please check amount of parentheses");
         }
-//        if (currentSolved.contains("-")) {
-//            for (int i=0;i<currentSolved.length()-1;i++) {
-//                if (currentSolved.charAt(i) == '-') {
-//                    currentSolved = currentSolved.replace(currentSolved.substring(i,i+1),"+-");
-//                }
-//            }
-//        }
-
-//
-//
-//
-//
-//
-//
-////        String currentSolved = null;
-//        while (currentSolved.contains("(") && currentSolved.contains(")")) {
-//            int innerOPIndex = currentSolved.lastIndexOf("(");
-//            int innerCPIndex = currentSolved.indexOf(")");
-//            String leftExpression;
-//            String rightExpression;
-//            String currentExpressionToSolve = currentSolved.substring(innerOPIndex+1,innerCPIndex);
-//            System.out.println("current to solve: " + currentExpressionToSolve);
-//
-//            leftExpression = currentSolved.substring(0,innerOPIndex).trim();
-//            System.out.println("Left expression: " + leftExpression);
-//            rightExpression = currentSolved.substring(innerCPIndex+1).trim();
-//            System.out.println("Right expression: " + rightExpression);
-//
-////            if (!leftExpression.isEmpty()) {
-////                currentSolved = leftExpression + prepareToSolve(currentExpressionToSolve,innerOPIndex,innerCPIndex);
-////                System.out.println("this was called 1");
-////            }
-////            else if (!rightExpression.isEmpty()) {
-////                currentSolved = prepareToSolve(currentExpressionToSolve,innerOPIndex,innerCPIndex) + rightExpression;
-////                System.out.println("this was called 2");
-////            }
-////            else if (!leftExpression.isEmpty() && !rightExpression.isEmpty()){
-////                currentSolved = leftExpression + prepareToSolve(currentExpressionToSolve,innerOPIndex,innerCPIndex) + rightExpression;
-////                System.out.println("this was called 3");
-////            }
-////            else {
-////                currentSolved = prepareToSolve(currentExpressionToSolve,innerOPIndex,innerCPIndex);
-////                System.out.println("this was called 4");
-////            }
-//            currentSolved = leftExpression + prepareToSolve(currentExpressionToSolve,innerOPIndex,innerCPIndex) + rightExpression;
-//            System.out.println("currentSolved: " + currentSolved);
-////            //--
-////            int determineOps = 0;
-////            if (currentExpressionToSolve.contains("×") || currentExpressionToSolve.contains("÷")
-////                                                       || currentExpressionToSolve.contains("%")) {
-////                if (currentExpressionToSolve.contains("×")) { determineOps += 2; }
-////                if (currentExpressionToSolve.contains("÷")) { determineOps += 3; }
-////                if (currentExpressionToSolve.contains("%")) { determineOps += 4; }
-////                switch (determineOps) {
-////                    case 2: currentSolved = toSolve(currentExpressionToSolve,"×"); break;
-////                    case 3: currentSolved = toSolve(currentExpressionToSolve,"÷"); break;
-////                    case 4: currentSolved = toSolve(currentExpressionToSolve,"%"); break;
-////                    case 5:
-////                        if (currentExpressionToSolve.indexOf("×") < currentExpressionToSolve.indexOf("÷")) {
-////                            currentSolved = toSolve(currentExpressionToSolve,"×"); }
-////                        if (currentExpressionToSolve.indexOf("÷") < currentExpressionToSolve.indexOf("×")) {
-////                            currentSolved = toSolve(currentExpressionToSolve,"÷"); }
-////                        break;
-////                    case 6:
-////                        if (currentExpressionToSolve.indexOf("×") < currentExpressionToSolve.indexOf("%")) {
-////                            currentSolved = toSolve(currentExpressionToSolve,"×"); }
-////                        if (currentExpressionToSolve.indexOf("%") < currentExpressionToSolve.indexOf("×")) {
-////                            currentSolved = toSolve(currentExpressionToSolve,"%"); }
-////                        break;
-////                    case 7:
-////                        if (currentExpressionToSolve.indexOf("÷") < currentExpressionToSolve.indexOf("%")) {
-////                            currentSolved = toSolve(currentExpressionToSolve,"÷"); }
-////                        if (currentExpressionToSolve.indexOf("%") < currentExpressionToSolve.indexOf("÷")) {
-////                            currentSolved = toSolve(currentExpressionToSolve,"%"); }
-////                        break;
-////                    case 9:
-////                        if (currentExpressionToSolve.indexOf("×") < currentExpressionToSolve.indexOf("%")
-////                                && currentExpressionToSolve.indexOf("×") < currentExpressionToSolve.indexOf("÷")) {
-////                            currentSolved = toSolve(currentExpressionToSolve,"×"); }
-////                        if (currentExpressionToSolve.indexOf("%") < currentExpressionToSolve.indexOf("×")
-////                                && currentExpressionToSolve.indexOf("%") < currentExpressionToSolve.indexOf("÷")) {
-////                            currentSolved = toSolve(currentExpressionToSolve,"%"); }
-////                        if (currentExpressionToSolve.indexOf("÷") < currentExpressionToSolve.indexOf("×")
-////                                && currentExpressionToSolve.indexOf("÷") < currentExpressionToSolve.indexOf("%")) {
-////                            currentSolved = toSolve(currentExpressionToSolve,"÷"); }
-////                        break;
-////                }
-////            }
-////            else if (currentExpressionToSolve.contains("+")) { currentSolved = toSolve(currentExpressionToSolve,"+"); }
-////            else { currentSolved = currentString.replace(currentString.substring(innerOPIndex,innerCPIndex+1),
-////                                                      currentExpressionToSolve); }
-////
-////
-////            //--
-//        }
-//
-//        while (currentSolved.contains("+") || currentSolved.contains("×") || currentSolved.contains("÷") || currentSolved.contains("%")) {
-//
-//            currentSolved = prepareToSolve(currentSolved,-1,-1);
-//            System.out.println("currentSolved part2: " + currentSolved);
-//        }
-//
 
         if (currentSolved.endsWith(".0")) {
             return currentSolved.replace(".0","").trim();
         }
         else { return currentSolved; }
-
     }
 
 

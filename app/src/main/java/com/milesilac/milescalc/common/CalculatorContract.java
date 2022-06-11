@@ -1,10 +1,11 @@
 package com.milesilac.milescalc.common;
 
+
 public interface CalculatorContract {
 
     interface InputString {
-        String getInputString();
-        void setInputString(String inputString);
+        String getString();
+        void setString(String inputString);
     }
 
     interface View {
@@ -21,17 +22,23 @@ public interface CalculatorContract {
 
     interface StringChecker {
         boolean attemptToAddParentheses();
-        int setOPCount(String count);
-        int setCPCount(String count);
+        void setOPCount(String count);
+        void setCPCount(String count);
         boolean getOPStatus();
         void setOPStatus(boolean o);
         boolean checkPCounts();
     }
 
-
     interface CalculationLogic {
         String solveString(String currentString);
     }
 
+    interface ThreadManager {
+        void execute(String s, ResultsGetter resultsGetter);
+    }
+
+    interface ResultsGetter {
+        void results(String s);
+    }
 
 }

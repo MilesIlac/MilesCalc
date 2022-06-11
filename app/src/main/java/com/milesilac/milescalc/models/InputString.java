@@ -7,12 +7,12 @@ public class InputString implements CalculatorContract.InputString {
     private String inputString = "";
 
     @Override
-    public String getInputString() {
+    public String getString() {
         return inputString;
     }
 
     @Override
-    public void setInputString(String inputString) {
+    public void setString(String inputString) {
         this.inputString = inputString;
     }
 }

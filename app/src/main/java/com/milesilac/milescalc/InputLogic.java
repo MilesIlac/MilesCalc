@@ -6,21 +6,19 @@ import android.util.Log;
 import com.milesilac.milescalc.common.CalculatorContract;
 import com.milesilac.milescalc.models.InputString;
 
+
 public class InputLogic implements CalculatorContract.InputLogic {
 
-    CalculatorContract.View view;
-    CalculatorContract.StringChecker stringChecker = new StringChecker(this);
-    InputString inputString = new InputString();
+    private final CalculatorContract.StringChecker stringChecker = new StringChecker(this);
+    private final InputString inputString = new InputString();
 
-
-    public InputLogic(CalculatorContract.View view) {
-        this.view = view;
+    public InputLogic() {
     }
 
 
     @Override
     public void inputNum(String number) {
-        inputString.setInputString(inputString.getInputString() + number);
+        inputString.setString(inputString.getString() + number);
     }
 
     @Override
@@ -28,24 +26,24 @@ public class InputLogic implements CalculatorContract.InputLogic {
         if (op.equals("parentheses")) {
             if (!stringChecker.getOPStatus()) {
                 if (stringChecker.attemptToAddParentheses()) {
-                    inputString.setInputString(inputString.getInputString() + "(");
+                    inputString.setString(inputString.getString() + "(");
                 }
                 else {
-                    inputString.setInputString(inputString.getInputString() + "×(");
+                    inputString.setString(inputString.getString() + "×(");
                 }
                 stringChecker.setOPCount("plus");
                 stringChecker.setOPStatus(true);
             }
             else {
                 if (stringChecker.attemptToAddParentheses()) {
-                    inputString.setInputString(inputString.getInputString() + "(");
+                    inputString.setString(inputString.getString() + "(");
                     stringChecker.setOPCount("plus");
                     stringChecker.setOPStatus(true);
                 }
                 else {
-                    inputString.setInputString(inputString.getInputString() + ")");
+                    inputString.setString(inputString.getString() + ")");
                     stringChecker.setCPCount("plus");
-                    if (inputString.getInputString().endsWith(")")) {
+                    if (inputString.getString().endsWith(")")) {
                         stringChecker.setOPStatus(!stringChecker.checkPCounts());
                     }
                     else stringChecker.setOPStatus(false);
@@ -53,51 +51,51 @@ public class InputLogic implements CalculatorContract.InputLogic {
             }
         }
         else if (op.equals("-")) {
-            inputString.setInputString(inputString.getInputString() + "+-");
-            Log.i("check","Actual string: " + inputString.getInputString());
+            inputString.setString(inputString.getString() + "+-");
+            Log.i("check","Actual string: " + inputString.getString());
         }
         else {
-            inputString.setInputString(inputString.getInputString() + op);
+            inputString.setString(inputString.getString() + op);
         }
 
     }
 
     @Override
     public String readCurrentString() {
-        if (inputString.getInputString().contains("+-")) {
-            return inputString.getInputString().replace("+-","-");
+        if (inputString.getString().contains("+-")) {
+            return inputString.getString().replace("+-","-");
         }
-        if (inputString.getInputString().endsWith(".0")) {
-            return inputString.getInputString().replace(".0","").trim();
+        if (inputString.getString().endsWith(".0")) {
+            return inputString.getString().replace(".0","").trim();
         }
-        else return inputString.getInputString();
+        else return inputString.getString();
     }
 
     @Override
     public String readActualCurrentStringToSolve() {
-        return inputString.getInputString();
+        return inputString.getString();
     }
 
     @Override
     public void deleteLastChar() {
-        if (!inputString.getInputString().isEmpty()) {
-            if (inputString.getInputString().endsWith("(")) {
-                String newInputString = inputString.getInputString().substring(0,inputString.getInputString().length()-1).trim();
+        if (!inputString.getString().isEmpty()) {
+            if (inputString.getString().endsWith("(")) {
+                String newString = inputString.getString().substring(0,inputString.getString().length()-1).trim();
                 stringChecker.setOPCount("minus");
-                inputString.setInputString(newInputString);
+                inputString.setString(newString);
             }
-            else if (inputString.getInputString().endsWith(")")) {
-                String newInputString = inputString.getInputString().substring(0,inputString.getInputString().length()-1).trim();
+            else if (inputString.getString().endsWith(")")) {
+                String newString = inputString.getString().substring(0,inputString.getString().length()-1).trim();
                 stringChecker.setCPCount("minus");
-                inputString.setInputString(newInputString);
+                inputString.setString(newString);
             }
-            else if (inputString.getInputString().endsWith("+-")) {
-                String newInputString = inputString.getInputString().substring(0,inputString.getInputString().length()-2).trim();
-                inputString.setInputString(newInputString);
+            else if (inputString.getString().endsWith("+-")) {
+                String newInputString = inputString.getString().substring(0,inputString.getString().length()-2).trim();
+                inputString.setString(newInputString);
             }
             else {
-                String newInputString = inputString.getInputString().substring(0,inputString.getInputString().length()-1).trim();
-                inputString.setInputString(newInputString);
+                String newInputString = inputString.getString().substring(0,inputString.getString().length()-1).trim();
+                inputString.setString(newInputString);
             }
 
         }
