@@ -10,8 +10,7 @@ public class CalculationLogic implements CalculatorContract.CalculationLogic {
 
     private final CalculatorContract.StringChecker stringChecker = new StringChecker();
 
-    public CalculationLogic() {
-    }
+    public CalculationLogic() { }
 
 
     @Override
@@ -54,7 +53,6 @@ public class CalculationLogic implements CalculatorContract.CalculationLogic {
 
 
     private String prepareToSolve(String fullString, String s, int innerOPIndex, int innerCPIndex, boolean hasP) {
-        //--
         String currentSolved = s;
         int determineOps = 0;
         if (s.contains("×") || s.contains("÷")
@@ -104,11 +102,8 @@ public class CalculationLogic implements CalculatorContract.CalculationLogic {
                     currentSolved = fullString;
                 }
             }
-
-        //--
         return currentSolved;
     }
-
 
 
     private String toSolve(String fullString, String currentExpressionToSolve, String op, int innerOPIndex, int innerCPIndex, boolean hasP) {
@@ -116,7 +111,7 @@ public class CalculationLogic implements CalculatorContract.CalculationLogic {
         int leftOpIndex = -1;
         int rightOpIndex = -1;
 
-        //check operation/s at left and right of current operation
+        //-- check operation/s at left and right of current operation
         for (int i=0;i<currentOpIndex;i++) {
             if (currentExpressionToSolve.charAt(i) == '+'
                     || currentExpressionToSolve.charAt(i) == '×'
@@ -133,6 +128,7 @@ public class CalculationLogic implements CalculatorContract.CalculationLogic {
                 rightOpIndex = i;
             }
         }
+        //--
 
         float a;
         float b;
@@ -140,14 +136,14 @@ public class CalculationLogic implements CalculatorContract.CalculationLogic {
         String newEquation = null;
         String newEquation2 = null;
         String solvedExpression = null;
-        if (leftOpIndex != -1) { //if left operand exists
+        if (leftOpIndex != -1) { //-- if left operand exists
             a = Float.parseFloat(currentExpressionToSolve.substring(leftOpIndex+1,currentOpIndex));
             newEquation = currentExpressionToSolve.substring(0,leftOpIndex+1).trim();
             determineCurrentSolved += 1;
         }
         else {
             a = Float.parseFloat(currentExpressionToSolve.substring(0,currentOpIndex));
-        }
+        } //--
         if (rightOpIndex != -1) { //if right operand exists
             b = Float.parseFloat(currentExpressionToSolve.substring(currentOpIndex+1,rightOpIndex));
             newEquation2 = currentExpressionToSolve.substring(rightOpIndex).trim();
@@ -155,20 +151,23 @@ public class CalculationLogic implements CalculatorContract.CalculationLogic {
         }
         else {
             b = Float.parseFloat(currentExpressionToSolve.substring(currentOpIndex+1));
-        }
-        switch (op) {
+        } //--
+
+        switch (op) { //-- actual operation
             case "+": solvedExpression = String.valueOf(a+b); break;
             case "×": solvedExpression = String.valueOf(a*b); break;
             case "÷": solvedExpression = String.valueOf(a/b); break;
             case "%": solvedExpression = String.valueOf(a%b); break;
-        }
+        } //--
+
         String currentSolved = null;
-        switch (determineCurrentSolved) {
+        switch (determineCurrentSolved) { //-- string reconstruction
             case 0: currentSolved = solvedExpression; break;
             case 1: currentSolved = newEquation + solvedExpression; break;
             case 2: currentSolved = solvedExpression + newEquation2; break;
             case 3: currentSolved = newEquation + solvedExpression + newEquation2; break;
-        }
+        } //--
+
         if (hasP) {
             assert currentSolved != null;
             if (currentSolved.contains("+") || currentSolved.contains("×") || currentSolved.contains("÷") || currentSolved.contains("%")) {
@@ -178,9 +177,7 @@ public class CalculationLogic implements CalculatorContract.CalculationLogic {
                 fullString = fullString.replace(fullString.substring(innerOPIndex,innerCPIndex+1),currentSolved);
             }
         }
-        else {
-            fullString = currentSolved;
-        }
+        else { fullString = currentSolved; }
 
         return fullString;
     }

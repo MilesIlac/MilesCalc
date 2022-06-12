@@ -11,12 +11,9 @@ public class StringChecker implements CalculatorContract.StringChecker {
     private int CPCount = 0;
     private boolean hasOP = false;
 
-    public StringChecker(CalculatorContract.InputLogic inputLogic) {
-        this.inputLogic = inputLogic;
-    }
+    public StringChecker(CalculatorContract.InputLogic inputLogic) { this.inputLogic = inputLogic; }
 
-    public StringChecker() {
-    }
+    public StringChecker() { }
 
 
     @Override

@@ -12,14 +12,11 @@ public class InputLogic implements CalculatorContract.InputLogic {
     private final CalculatorContract.StringChecker stringChecker = new StringChecker(this);
     private final InputString inputString = new InputString();
 
-    public InputLogic() {
-    }
+    public InputLogic() { }
 
 
     @Override
-    public void inputNum(String number) {
-        inputString.setString(inputString.getString() + number);
-    }
+    public void inputNum(String number) { inputString.setString(inputString.getString() + number); }
 
     @Override
     public void inputOp(String op) {
@@ -72,9 +69,7 @@ public class InputLogic implements CalculatorContract.InputLogic {
     }
 
     @Override
-    public String readActualCurrentStringToSolve() {
-        return inputString.getString();
-    }
+    public String readActualCurrentStringToSolve() { return inputString.getString(); }
 
     @Override
     public void deleteLastChar() {
@@ -90,14 +85,13 @@ public class InputLogic implements CalculatorContract.InputLogic {
                 inputString.setString(newString);
             }
             else if (inputString.getString().endsWith("+-")) {
-                String newInputString = inputString.getString().substring(0,inputString.getString().length()-2).trim();
-                inputString.setString(newInputString);
+                String newString = inputString.getString().substring(0,inputString.getString().length()-2).trim();
+                inputString.setString(newString);
             }
             else {
-                String newInputString = inputString.getString().substring(0,inputString.getString().length()-1).trim();
-                inputString.setString(newInputString);
+                String newString = inputString.getString().substring(0,inputString.getString().length()-1).trim();
+                inputString.setString(newString);
             }
-
         }
     }
 }

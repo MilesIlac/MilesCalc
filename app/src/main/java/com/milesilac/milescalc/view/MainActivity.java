@@ -99,7 +99,6 @@ public class MainActivity extends AppCompatActivity implements CalculatorContrac
                         txtViewSmall.setText(inputLogic.readCurrentString());
                         break;
                     case 16:
-//                        toCheckParenthesis();
                         inputLogic.inputOp("parentheses");
                         System.out.println(inputLogic.readCurrentString());
                         txtViewSmall.setText(inputLogic.readCurrentString());
