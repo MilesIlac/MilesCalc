@@ -1,11 +1,11 @@
-package com.milesilac.milescalc.view;
+package com.milesilac.milescalc.views;
 
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.milesilac.milescalc.InputLogic;
 import com.milesilac.milescalc.R;
@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity implements CalculatorContrac
     private CalculatorContract.InputLogic inputLogic;
     private CalculatorContract.ThreadManager threadManager;
 
-    private TextView txtViewSmall,txtViewBig;
+    private TextView txtViewSmall, txtViewBig;
     private final Button[] buttons = new Button[20];
 
 
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements CalculatorContrac
         threadManager = new ThreadManager();
 
 
-        for (int i=0;i<10;i++) {
+        for (int i = 0; i < 10; i++) {
             int currentNum = i;
             buttons[i].setOnClickListener(v -> {
                 inputLogic.inputNum(String.valueOf(currentNum));
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements CalculatorContrac
             });
         }
 
-        for (int i=10;i<20;i++) {
+        for (int i = 10; i < 20; i++) {
             int currentOp = i;
             buttons[i].setOnClickListener(v -> {
                 switch (currentOp) {

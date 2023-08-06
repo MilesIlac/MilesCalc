@@ -1,4 +1,4 @@
-package com.milesilac.milescalc.models;
+package com.milesilac.milescalc.model;
 
 import com.milesilac.milescalc.common.CalculatorContract;
 
